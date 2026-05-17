@@ -1,0 +1,449 @@
+TERRAFORM ROADMAP
+
+==================================================
+
+INTRODUCTION TO TERRAFORM
+==================================================
+What is Terraform
+Why Terraform
+Infrastructure as Code (IaC)
+Terraform Architecture
+Declarative vs Imperative
+Terraform Workflow
+Terraform State
+Terraform Providers
+
+Tools:
+
+Terraform CLI
+Terraform Registry
+Terraform Cloud
+==================================================
+2. INSTALLATION & SETUP
+Install Terraform on Linux
+Install Terraform on Windows
+Install Terraform on Mac
+Verify Installation
+Configure PATH
+
+Commands:
+
+terraform version
+terraform -help
+==================================================
+3. TERRAFORM BASICS
+
+Core Commands
+
+terraform init
+terraform validate
+terraform fmt
+terraform plan
+terraform apply
+terraform destroy
+
+Workflow
+
+Write Configuration
+Initialize Provider
+Plan Changes
+Apply Changes
+Destroy Resources
+==================================================
+4. HCL (HASHICORP CONFIGURATION LANGUAGE)
+
+Basics
+
+Syntax
+Blocks
+Arguments
+Expressions
+
+Data Types
+
+string
+number
+bool
+list
+map
+object
+tuple
+
+Advanced
+
+Variables
+Locals
+Outputs
+==================================================
+5. PROVIDERS
+What are Providers
+Installing Providers
+Configuring Providers
+
+Popular Providers
+
+AWS
+Azure
+Google Cloud
+Kubernetes
+Docker
+GitHub
+
+Commands:
+
+terraform providers
+==================================================
+6. RESOURCES
+What are Resources
+Resource Blocks
+Resource Dependencies
+
+Meta Arguments
+
+depends_on
+count
+for_each
+lifecycle
+provider
+
+Examples
+
+Create EC2
+Create S3
+Create VPC
+==================================================
+7. VARIABLES
+
+Variable Types
+
+string
+list
+map
+object
+
+Methods
+
+variable blocks
+tfvars files
+CLI variables
+Environment variables
+
+Validation
+
+Variable validation rules
+
+Best Practices
+
+Reusability
+Default values
+==================================================
+8. OUTPUTS
+Output Blocks
+Sensitive Outputs
+Referencing Outputs
+
+Uses
+
+Sharing Resource Info
+Module Outputs
+==================================================
+9. LOCALS
+Local Variables
+Simplify Expressions
+Reuse Config Values
+
+Best Practices
+
+Naming Standards
+Readability
+==================================================
+10. DATA SOURCES
+What are Data Sources
+Read Existing Infrastructure
+
+Examples
+
+Existing VPC
+Existing AMI
+Existing Security Groups
+
+Commands
+
+terraform state show
+==================================================
+11. FUNCTIONS & EXPRESSIONS
+
+Functions
+
+length()
+lookup()
+merge()
+concat()
+contains()
+format()
+
+Expressions
+
+Conditional Expressions
+For Expressions
+Dynamic Blocks
+==================================================
+12. STATE MANAGEMENT
+
+Terraform State
+
+Local State
+Remote State
+
+Commands
+
+terraform state list
+terraform state show
+terraform state rm
+terraform import
+
+State Locking
+
+DynamoDB Locking
+
+Remote Backends
+
+S3 Backend
+Terraform Cloud Backend
+
+Best Practices
+
+Secure State Files
+Encryption
+==================================================
+13. MODULES
+
+Module Basics
+
+Create Modules
+Use Modules
+Module Inputs
+Module Outputs
+
+Module Sources
+
+Local Modules
+Registry Modules
+Git Modules
+
+Best Practices
+
+Reusability
+Clean Structure
+==================================================
+14. WORKSPACES
+What are Workspaces
+Create Workspaces
+Switch Workspaces
+
+Commands
+
+terraform workspace new
+terraform workspace select
+terraform workspace list
+
+Use Cases
+
+Dev
+QA
+Production
+==================================================
+15. TERRAFORM WITH AWS
+
+Compute
+
+EC2
+Lambda
+
+Storage
+
+S3
+EBS
+
+Networking
+
+VPC
+Subnets
+Route Tables
+
+Security
+
+IAM
+Security Groups
+
+Databases
+
+RDS
+DynamoDB
+
+Monitoring
+
+CloudWatch
+==================================================
+16. TERRAFORM WITH KUBERNETES
+Create Kubernetes Resources
+Deploy Namespaces
+Services
+Deployments
+ConfigMaps
+Secrets
+
+Providers
+
+Kubernetes Provider
+Helm Provider
+==================================================
+17. TERRAFORM CLOUD
+Workspaces
+Remote Execution
+State Storage
+Policy Enforcement
+Team Collaboration
+
+Features
+
+VCS Integration
+Drift Detection
+==================================================
+18. TERRAFORM TESTING
+
+Validation
+
+terraform validate
+terraform fmt
+
+Static Analysis
+
+tflint
+checkov
+tfsec
+
+Policy Testing
+
+Sentinel
+==================================================
+19. CI/CD WITH TERRAFORM
+
+Pipeline Integration
+
+Jenkins
+GitHub Actions
+GitLab CI
+
+Pipeline Steps
+
+Format Check
+Validate
+Plan
+Approval
+Apply
+
+Deployment Strategies
+
+Automated Deployments
+Controlled Releases
+==================================================
+20. SECURITY BEST PRACTICES
+
+Secrets
+
+Vault Integration
+Environment Variables
+
+Access Control
+
+IAM Roles
+Least Privilege
+
+State Security
+
+Encrypt State
+Restrict Access
+
+Code Security
+
+Scan Terraform Code
+
+Tools
+
+tfsec
+checkov
+==================================================
+21. TROUBLESHOOTING
+
+Common Issues
+
+Provider Errors
+State Drift
+Dependency Conflicts
+Apply Failures
+
+Debugging Tools
+
+TF_LOG
+terraform graph
+terraform console
+==================================================
+22. REAL-WORLD PROJECTS
+
+BEGINNER
+
+Deploy EC2 Instance
+Create S3 Bucket
+Simple VPC
+
+INTERMEDIATE
+
+Full Web App Infrastructure
+RDS + EC2 Architecture
+
+ADVANCED
+
+Multi-Region AWS Infrastructure
+Kubernetes Cluster Automation
+Production-grade Landing Zone
+==================================================
+23. INTERVIEW PREPARATION
+
+Focus
+
+Terraform Workflow
+State Management
+Modules
+Workspaces
+Security
+Troubleshooting
+
+Practice
+
+Infrastructure Design Questions
+Debugging Scenarios
+Real-world Deployments
+==================================================
+24. ADVANCED TERRAFORM
+Dynamic Infrastructure
+Complex Modules
+Multi-account AWS Setup
+Policy as Code
+Drift Detection
+Custom Providers
+==================================================
+25. FINAL GOAL
+
+Master:
+
+Terraform Fundamentals
+HCL
+Providers
+Modules
+State Management
+AWS Automation
+Kubernetes Automation
+CI/CD Integration
+Security
+Enterprise Infrastructure Automation

@@ -1,0 +1,463 @@
+DOCKER ROADMAP
+
+==================================================
+
+INTRODUCTION TO DOCKER
+==================================================
+What is Docker
+Why Docker
+Virtual Machines vs Containers
+Containerization Basics
+Docker Architecture
+Docker Engine
+Docker Daemon
+Docker Client
+Docker Hub
+Docker Registry
+
+Tools:
+
+Docker Engine
+Docker Desktop
+Docker CLI
+Docker Hub
+==================================================
+2. INSTALLATION & SETUP
+Install Docker on Linux
+Install Docker on Windows
+Install Docker on Mac
+Verify Installation
+Docker Service Management
+Docker Permissions
+Add User to Docker Group
+
+Commands:
+
+docker version
+docker info
+systemctl status docker
+==================================================
+3. DOCKER BASICS
+
+CORE COMMANDS
+
+docker run
+docker pull
+docker push
+docker ps
+docker stop
+docker start
+docker restart
+docker rm
+docker rmi
+
+CONTAINER OPERATIONS
+
+Run Interactive Containers
+Detached Mode
+Naming Containers
+Container Logs
+Container Inspection
+
+Useful Flags
+
+-it
+-d
+--name
+-p
+-v
+--rm
+==================================================
+4. IMAGES
+What are Docker Images
+Image Layers
+Pulling Images
+Removing Images
+Tagging Images
+Image History
+Image Inspection
+
+Commands:
+
+docker images
+docker pull
+docker rmi
+docker tag
+docker inspect
+==================================================
+5. DOCKERFILE
+
+BASICS
+
+FROM
+RUN
+CMD
+ENTRYPOINT
+WORKDIR
+COPY
+ADD
+EXPOSE
+
+ADVANCED
+
+ENV
+ARG
+LABEL
+HEALTHCHECK
+USER
+
+BEST PRACTICES
+
+Small Base Images
+Multi-stage Builds
+Layer Optimization
+Security Hardening
+
+Commands:
+
+docker build
+docker build -t
+==================================================
+6. CONTAINER NETWORKING
+
+NETWORK TYPES
+
+Bridge Network
+Host Network
+None Network
+Overlay Network
+Macvlan Network
+
+OPERATIONS
+
+Create Networks
+Connect Containers
+DNS Resolution
+Network Inspection
+
+Commands:
+
+docker network ls
+docker network create
+docker network inspect
+docker network connect
+==================================================
+7. VOLUMES & STORAGE
+
+STORAGE TYPES
+
+Volumes
+Bind Mounts
+tmpfs Mounts
+
+OPERATIONS
+
+Create Volumes
+Attach Volumes
+Backup Volumes
+Restore Volumes
+
+Commands:
+
+docker volume create
+docker volume ls
+docker volume inspect
+docker volume rm
+
+Best Practices
+
+Persistent Data
+Data Isolation
+Backup Strategies
+==================================================
+8. CONTAINER LIFECYCLE MANAGEMENT
+Start Containers
+Stop Containers
+Restart Containers
+Pause Containers
+Kill Containers
+Remove Containers
+
+MONITORING
+
+Logs
+Stats
+Top Processes
+Inspect State
+
+Commands:
+
+docker logs
+docker stats
+docker top
+docker inspect
+==================================================
+9. DOCKER COMPOSE
+
+INTRODUCTION
+
+What is Docker Compose
+Why Use Compose
+
+compose.yml
+
+version
+services
+volumes
+networks
+environment
+
+COMMANDS
+
+docker compose up
+docker compose down
+docker compose ps
+docker compose logs
+
+Advanced
+
+Multi-container Apps
+Dependencies
+Scaling Services
+==================================================
+10. ENVIRONMENT VARIABLES & CONFIGURATION
+ENV in Dockerfile
+.env Files
+Compose Environment Variables
+Runtime Variables
+
+Commands:
+
+docker run -e
+env_file
+
+Best Practices
+
+Separate Config from Code
+Avoid Hardcoding Secrets
+==================================================
+11. DOCKER REGISTRIES
+
+PUBLIC REGISTRY
+
+Docker Hub
+
+PRIVATE REGISTRY
+
+Self-hosted Registry
+AWS ECR
+GCR
+Azure Container Registry
+
+Operations
+
+Login
+Push Images
+Pull Images
+Tagging
+
+Commands:
+
+docker login
+docker push
+docker pull
+==================================================
+12. DEBUGGING & TROUBLESHOOTING
+View Logs
+Exec into Containers
+Inspect Metadata
+Check Resource Usage
+Debug Network Issues
+
+Commands:
+
+docker exec -it
+docker logs
+docker inspect
+docker stats
+
+Common Problems
+
+Port Conflicts
+Permission Errors
+Disk Space Issues
+Build Failures
+==================================================
+13. SECURITY
+
+CONTAINER SECURITY
+
+Non-root Containers
+Read-only Filesystems
+Resource Limits
+
+IMAGE SECURITY
+
+Vulnerability Scanning
+Trusted Base Images
+
+SECRETS MANAGEMENT
+
+Docker Secrets
+Environment Security
+
+Tools:
+
+docker scan
+trivy
+==================================================
+14. RESOURCE MANAGEMENT
+
+CPU LIMITS
+
+--cpus
+
+MEMORY LIMITS
+
+--memory
+
+STORAGE LIMITS
+
+Disk Usage Control
+
+Commands:
+
+docker stats
+docker system df
+==================================================
+15. LOGGING & MONITORING
+
+LOGGING DRIVERS
+
+json-file
+syslog
+fluentd
+awslogs
+
+MONITORING TOOLS
+
+Prometheus
+Grafana
+cAdvisor
+
+Commands:
+
+docker logs
+docker stats
+==================================================
+16. DOCKER SWARM
+
+INTRODUCTION
+
+What is Swarm
+
+CLUSTER MANAGEMENT
+
+Initialize Cluster
+Add Nodes
+Remove Nodes
+
+SERVICES
+
+Deploy Services
+Scale Services
+Rolling Updates
+
+Commands:
+
+docker swarm init
+docker service create
+docker service scale
+==================================================
+17. CI/CD WITH DOCKER
+
+Build Pipelines
+
+Docker Build Automation
+Image Testing
+Registry Push
+
+Tools
+
+Jenkins
+GitHub Actions
+GitLab CI
+
+Deployment Strategies
+
+Rolling Deployments
+Canary Deployments
+==================================================
+18. DOCKER + KUBERNETES
+Docker as Runtime
+Build Images for Kubernetes
+Push to Registry
+Pull into Kubernetes
+
+Topics
+
+Container Standards
+OCI
+==================================================
+19. AUTOMATION WITH DOCKER
+Shell Automation
+Cleanup Scripts
+Scheduled Backups
+Auto Builds
+
+Useful Commands
+
+docker system prune
+docker builder prune
+==================================================
+20. REAL-WORLD PROJECTS
+
+BEGINNER
+
+Run Nginx Container
+Python App Containerization
+MySQL Container
+
+INTERMEDIATE
+
+Multi-container Web App
+Compose Deployment
+Monitoring Stack
+
+ADVANCED
+
+Production Microservices
+CI/CD Docker Pipeline
+Distributed Container Platform
+==================================================
+21. INTERVIEW PREPARATION
+
+Focus
+
+Docker Architecture
+Dockerfile Optimization
+Networking
+Storage
+Security
+Compose
+
+Practice
+
+Debugging Scenarios
+Production Issues
+Build Optimization
+==================================================
+22. FINAL GOAL
+
+Master:
+
+Docker Fundamentals
+Image Creation
+Container Networking
+Volumes & Storage
+Docker Compose
+Security
+Monitoring
+Debugging
+CI/CD Integration
+Production Containerization

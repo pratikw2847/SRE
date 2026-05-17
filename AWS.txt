@@ -1,0 +1,494 @@
+AWS ROADMAP
+
+==================================================
+
+INTRODUCTION TO AWS
+==================================================
+What is AWS
+Why AWS
+AWS Global Infrastructure
+Regions
+Availability Zones
+Edge Locations
+Shared Responsibility Model
+AWS Pricing Model
+AWS Free Tier
+AWS Console
+AWS CLI
+AWS SDK
+
+Tools:
+
+AWS Console
+AWS CLI
+SDKs (Python boto3, Java, Node.js)
+==================================================
+2. AWS ACCOUNT & IAM
+
+IAM BASICS
+
+Root User
+IAM Users
+IAM Groups
+IAM Roles
+Policies
+Permissions
+MFA
+Password Policies
+
+ADVANCED IAM
+
+Managed Policies
+Inline Policies
+Trust Policies
+Assume Role
+Cross Account Access
+Federation
+IAM Identity Center
+
+Security Best Practices
+
+Least Privilege
+Key Rotation
+Temporary Credentials
+==================================================
+3. COMPUTE SERVICES
+
+EC2
+
+Instance Types
+Launching Instances
+AMIs
+Security Groups
+Key Pairs
+User Data
+
+Advanced EC2
+
+Placement Groups
+Dedicated Hosts
+Elastic IP
+Reserved Instances
+Spot Instances
+
+AUTO SCALING
+
+Launch Templates
+Scaling Policies
+Health Checks
+
+LOAD BALANCING
+
+ALB
+NLB
+CLB
+Target Groups
+
+SERVERLESS COMPUTE
+
+Lambda
+Layers
+Event Triggers
+Cold Starts
+
+CONTAINERS
+
+ECS
+EKS
+Fargate
+==================================================
+4. STORAGE SERVICES
+
+OBJECT STORAGE
+
+S3 Buckets
+Objects
+Storage Classes
+Versioning
+Lifecycle Policies
+
+Advanced S3
+
+Replication
+Multipart Upload
+Static Website Hosting
+Event Notifications
+
+BLOCK STORAGE
+
+EBS
+Snapshots
+Performance Types
+
+FILE STORAGE
+
+EFS
+FSx
+
+ARCHIVE
+
+Glacier
+Glacier Deep Archive
+==================================================
+5. NETWORKING
+
+VPC BASICS
+
+CIDR
+Subnets
+Public / Private Subnets
+Route Tables
+Internet Gateway
+NAT Gateway
+
+SECURITY
+
+Security Groups
+NACLs
+
+ADVANCED
+
+VPC Peering
+Transit Gateway
+VPC Endpoints
+
+DNS
+
+Route53
+Hosted Zones
+Routing Policies
+
+CDN
+
+CloudFront
+
+HYBRID
+
+VPN
+Direct Connect
+==================================================
+6. DATABASE SERVICES
+
+RELATIONAL
+
+RDS
+Aurora
+Read Replicas
+Multi-AZ
+
+NOSQL
+
+DynamoDB
+Global Tables
+DAX
+
+CACHE
+
+ElastiCache
+Redis
+Memcached
+
+ANALYTICS
+
+Redshift
+
+SEARCH
+
+OpenSearch
+==================================================
+7. MONITORING & OBSERVABILITY
+
+CLOUDWATCH
+
+Metrics
+Logs
+Alarms
+Dashboards
+Insights
+
+TRACING
+
+AWS X-Ray
+
+AUDIT
+
+CloudTrail
+
+CONFIG MANAGEMENT
+
+AWS Config
+
+EVENTS
+
+EventBridge
+
+LOG STREAMING
+
+Kinesis Firehose
+==================================================
+8. SECURITY SERVICES
+
+ENCRYPTION
+
+KMS
+CloudHSM
+
+SECRETS
+
+Secrets Manager
+Parameter Store
+
+THREAT DETECTION
+
+GuardDuty
+Inspector
+
+WEB SECURITY
+
+WAF
+Shield
+
+DATA SECURITY
+
+Macie
+
+COMPLIANCE
+
+Artifact
+==================================================
+9. INFRASTRUCTURE AS CODE
+
+CloudFormation
+
+Templates
+Parameters
+Outputs
+Nested Stacks
+
+AWS CDK
+
+Constructs
+Apps
+Deployments
+
+Terraform with AWS
+
+Providers
+Resources
+Modules
+State Management
+==================================================
+10. DEVOPS & CI/CD
+
+AWS TOOLS
+
+CodeCommit
+CodeBuild
+CodeDeploy
+CodePipeline
+
+DEPLOYMENT STRATEGIES
+
+Blue Green
+Canary
+Rolling Updates
+
+ARTIFACTS
+
+ECR
+S3 Artifact Store
+
+INTEGRATION
+
+Jenkins + AWS
+GitHub Actions + AWS
+==================================================
+11. SERVERLESS ARCHITECTURE
+Lambda
+API Gateway
+Step Functions
+DynamoDB Streams
+SQS
+SNS
+EventBridge
+
+Patterns
+
+Event Driven Architecture
+Async Processing
+Fan-Out Pattern
+==================================================
+12. MESSAGING SERVICES
+
+QUEUE
+
+SQS
+DLQ
+
+PUB/SUB
+
+SNS
+
+STREAMING
+
+Kinesis
+
+WORKFLOWS
+
+Step Functions
+
+EVENT ROUTING
+
+EventBridge
+==================================================
+13. CONTAINERS & KUBERNETES
+
+ECS
+
+Tasks
+Services
+Clusters
+
+EKS
+
+Node Groups
+Managed Kubernetes
+
+FARGATE
+
+Serverless Containers
+
+DOCKER + AWS
+
+Build
+Push to ECR
+Deploy
+==================================================
+14. BACKUP & DISASTER RECOVERY
+AWS Backup
+Snapshots
+Cross Region Replication
+Multi AZ
+Multi Region Failover
+
+Recovery Models
+
+Backup Restore
+Pilot Light
+Warm Standby
+Active Active
+==================================================
+15. COST OPTIMIZATION
+Savings Plans
+Reserved Instances
+Spot Instances
+Cost Explorer
+AWS Budgets
+Trusted Advisor
+
+Optimization
+
+Rightsizing
+Idle Resource Cleanup
+==================================================
+16. AUTOMATION WITH PYTHON
+
+boto3
+
+EC2 Automation
+S3 Automation
+IAM Automation
+Snapshot Scripts
+Cost Reporting
+
+Scripts
+
+Resource Cleanup
+Health Checks
+Backup Automation
+==================================================
+17. SYSTEM DESIGN ON AWS
+High Availability
+Fault Tolerance
+Scalability
+Stateless Design
+Distributed Systems
+
+Patterns
+
+Microservices
+CQRS
+API Gateway
+Event Driven Design
+==================================================
+18. CERTIFICATIONS
+
+FOUNDATION
+
+Cloud Practitioner
+
+ASSOCIATE
+
+Solutions Architect Associate
+Developer Associate
+SysOps Associate
+
+PROFESSIONAL
+
+Solutions Architect Pro
+DevOps Engineer Pro
+
+SPECIALTY
+
+Security Specialty
+Advanced Networking Specialty
+==================================================
+19. PROJECTS
+
+BEGINNER
+
+Static Website on S3
+EC2 Web Hosting
+
+INTERMEDIATE
+
+Auto Scaling Web App
+CI/CD Pipeline
+
+ADVANCED
+
+Kubernetes Platform on EKS
+Multi Region Disaster Recovery
+Serverless SaaS
+==================================================
+20. INTERVIEW PREPARATION
+
+Focus
+
+Core AWS Services
+Security
+Networking
+Scalability
+Troubleshooting
+Architecture Design
+
+Practice
+
+Scenario Questions
+Whiteboarding
+Incident Simulations
+==================================================
+21. FINAL GOAL
+
+Master:
+
+AWS Core Services
+Cloud Architecture
+Security
+Networking
+Monitoring
+Automation
+Scalability
+Reliability Engineering
+Incident Response
+Production Infrastructure

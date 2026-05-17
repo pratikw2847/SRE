@@ -1,0 +1,494 @@
+==================================================
+3. OSI MODEL
+
+Layer 1 — Physical
+Layer 2 — Data Link
+Layer 3 — Network
+Layer 4 — Transport
+Layer 5 — Session
+Layer 6 — Presentation
+Layer 7 — Application
+
+Learn:
+
+Purpose of each layer
+Devices at each layer
+Protocols at each layer
+Troubleshooting by layer
+
+Encapsulation / Decapsulation
+
+==================================================
+4. TCP/IP MODEL
+
+Layers
+
+Network Interface
+Internet
+Transport
+Application
+
+Comparison:
+
+TCP/IP vs OSI
+
+Protocols
+
+IP
+TCP
+UDP
+ICMP
+ARP
+==================================================
+5. IP ADDRESSING
+
+IPv4
+
+Classes
+Private IP
+Public IP
+Reserved Ranges
+
+Subnetting
+
+CIDR Notation
+Subnet Masks
+Network Address
+Broadcast Address
+
+Advanced
+
+VLSM
+Supernetting
+
+IPv6
+
+Address Structure
+Compression Rules
+IPv6 Types
+==================================================
+6. MAC ADDRESSING & ARP
+MAC Address Basics
+ARP Working
+ARP Table
+Gratuitous ARP
+
+Commands
+
+arp -a
+ip neigh
+
+Troubleshooting
+
+Duplicate IP Issues
+==================================================
+7. SWITCHING
+Layer 2 Switching
+MAC Address Table
+Broadcast Domains
+Collision Domains
+
+Advanced
+
+VLANs
+Trunking
+STP
+RSTP
+==================================================
+8. ROUTING
+
+Basics
+
+Static Routing
+Dynamic Routing
+
+Protocols
+
+RIP
+OSPF
+BGP
+EIGRP
+
+Routing Concepts
+
+Routing Tables
+Default Gateway
+Next Hop
+
+Commands
+
+route
+ip route
+==================================================
+9. TCP & UDP
+
+TCP
+
+Connection Oriented
+Reliability
+3-Way Handshake
+Flow Control
+Retransmission
+
+UDP
+
+Connectionless
+Low Latency
+
+Compare:
+
+TCP vs UDP
+
+Use Cases
+
+HTTP
+Streaming
+DNS
+Gaming
+==================================================
+10. PORTS & SOCKETS
+
+Common Ports
+
+20/21 FTP
+22 SSH
+25 SMTP
+53 DNS
+80 HTTP
+110 POP3
+143 IMAP
+443 HTTPS
+3306 MySQL
+5432 PostgreSQL
+6379 Redis
+9090 Prometheus
+
+Socket Concepts
+
+Client Socket
+Server Socket
+
+Commands
+
+netstat
+ss
+==================================================
+11. DNS
+
+DNS Basics
+
+Domain Name Resolution
+Recursive Query
+Iterative Query
+
+Record Types
+
+A
+AAAA
+CNAME
+MX
+TXT
+NS
+PTR
+
+Advanced
+
+DNS Caching
+TTL
+DNS Propagation
+
+Commands
+
+nslookup
+dig
+host
+==================================================
+12. HTTP / HTTPS
+
+HTTP Basics
+
+Request / Response Model
+Methods
+Headers
+Status Codes
+
+Methods
+
+GET
+POST
+PUT
+DELETE
+PATCH
+
+Status Codes
+
+2xx
+3xx
+4xx
+5xx
+
+HTTPS
+
+TLS Handshake
+Certificates
+
+Tools
+
+curl
+wget
+==================================================
+13. TLS / SSL
+Encryption Basics
+Certificates
+Public / Private Keys
+Certificate Chain
+CA
+
+TLS Handshake
+
+Versions
+
+TLS 1.2
+TLS 1.3
+
+Common Problems
+
+Expired Certs
+Mismatch Errors
+
+Commands
+
+openssl s_client
+==================================================
+14. NAT
+
+Types
+
+Static NAT
+Dynamic NAT
+PAT
+
+Understand
+
+Public to Private Mapping
+Home Router NAT
+Cloud NAT
+
+Troubleshooting NAT Issues
+
+==================================================
+15. FIREWALLS
+
+Types
+
+Stateless
+Stateful
+
+Rules
+
+Allow / Deny
+Inbound / Outbound
+
+Cloud Firewalls
+
+AWS Security Groups
+NACLs
+
+Linux Firewalls
+
+iptables
+ufw
+==================================================
+16. LOAD BALANCING
+
+Types
+
+Layer 4 Load Balancer
+Layer 7 Load Balancer
+
+Algorithms
+
+Round Robin
+Least Connections
+IP Hash
+
+Health Checks
+
+Tools
+
+NGINX
+HAProxy
+AWS ELB
+==================================================
+17. REVERSE PROXY
+What is Reverse Proxy
+Why Use It
+
+Features
+
+SSL Termination
+Caching
+Routing
+
+Tools
+
+NGINX
+Traefik
+HAProxy
+==================================================
+18. VPN & TUNNELING
+VPN Basics
+IPSec
+OpenVPN
+WireGuard
+
+Cloud VPN
+
+AWS Site-to-Site VPN
+
+Concepts
+
+Tunneling
+Encryption
+==================================================
+19. NETWORK TROUBLESHOOTING TOOLS
+
+Core Tools
+
+ping
+traceroute
+mtr
+tcpdump
+Wireshark
+curl
+dig
+ss
+netstat
+
+Learn
+
+Packet Analysis
+Latency Diagnosis
+Route Failures
+==================================================
+20. CLOUD NETWORKING
+
+AWS
+
+VPC
+Subnets
+Route Tables
+NAT Gateway
+Internet Gateway
+
+Azure
+
+VNets
+
+GCP
+
+VPC Networks
+
+Advanced
+
+Peering
+Transit Gateway
+==================================================
+21. KUBERNETES NETWORKING
+Pod Networking
+Services
+ClusterIP
+NodePort
+LoadBalancer
+Ingress
+
+CNI Plugins
+
+Calico
+Flannel
+Cilium
+
+DNS in Kubernetes
+
+==================================================
+22. CDN & EDGE NETWORKING
+CDN Basics
+Caching
+Edge Locations
+
+Providers
+
+CloudFront
+Cloudflare
+
+Topics
+
+Cache Invalidation
+TTL Strategy
+==================================================
+23. NETWORK SECURITY
+DDoS
+MITM
+Spoofing
+Port Scanning
+IDS / IPS
+
+Security Tools
+
+Fail2ban
+Snort
+Suricata
+==================================================
+24. REAL-WORLD PROJECTS
+
+BEGINNER
+
+Subnet Calculator
+DNS Lookup Tool
+
+INTERMEDIATE
+
+Reverse Proxy Setup
+Secure HTTPS Server
+
+ADVANCED
+
+Load Balanced Infrastructure
+VPN Setup
+Multi-VPC Architecture
+==================================================
+25. INTERVIEW PREPARATION
+
+Focus
+
+OSI Model
+TCP/IP
+DNS
+HTTP/HTTPS
+Routing
+Firewalls
+Load Balancers
+Troubleshooting
+
+Practice
+
+Packet Flow Questions
+Real-world Incident Debugging
+==================================================
+26. FINAL GOAL
+
+Master:
+
+OSI & TCP/IP
+IP Addressing
+DNS
+HTTP/HTTPS
+TLS
+Routing
+NAT
+Firewalls
+Load Balancers
+Reverse Proxies
+Cloud Networking
+Kubernetes Networking
+Production Troubleshooting

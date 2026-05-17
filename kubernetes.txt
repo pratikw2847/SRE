@@ -1,0 +1,529 @@
+KUBERNETES ROADMAP
+
+==================================================
+
+INTRODUCTION TO KUBERNETES
+==================================================
+What is Kubernetes
+Why Kubernetes
+Containers vs Kubernetes
+Kubernetes Architecture
+Control Plane
+Worker Nodes
+Cluster Concepts
+Declarative Infrastructure
+Kubernetes Ecosystem
+
+Tools:
+
+kubectl
+kubeadm
+minikube
+kind
+==================================================
+2. INSTALLATION & SETUP
+
+Local Setup
+
+Install kubectl
+Install minikube
+Install kind
+
+Cluster Setup
+
+kubeadm setup
+Managed Kubernetes
+
+Cloud Platforms
+
+EKS
+GKE
+AKS
+
+Commands:
+
+kubectl version
+kubectl cluster-info
+kubectl get nodes
+==================================================
+3. KUBERNETES ARCHITECTURE
+
+CONTROL PLANE
+
+API Server
+Scheduler
+Controller Manager
+etcd
+
+WORKER NODES
+
+kubelet
+kube-proxy
+Container Runtime
+
+Networking Components
+
+CNI Plugins
+==================================================
+4. KUBECTL BASICS
+
+Core Commands
+
+kubectl get
+kubectl describe
+kubectl logs
+kubectl exec
+kubectl delete
+kubectl apply
+
+Useful Flags
+
+-n
+-o yaml
+--watch
+
+Debugging
+
+Events
+Logs
+Describe
+==================================================
+5. PODS
+What are Pods
+Pod Lifecycle
+Multi-container Pods
+Init Containers
+
+Pod Operations
+
+Create Pods
+Delete Pods
+Inspect Pods
+
+Commands:
+
+kubectl run
+kubectl get pods
+kubectl describe pod
+==================================================
+6. YAML CONFIGURATION
+
+Basic Structure
+
+apiVersion
+kind
+metadata
+spec
+status
+
+Manifest Management
+
+Create YAML
+Apply YAML
+Edit YAML
+
+Best Practices
+
+Version Control
+Reusability
+==================================================
+7. DEPLOYMENTS
+What are Deployments
+ReplicaSets
+Scaling Deployments
+Rolling Updates
+Rollbacks
+
+Commands:
+
+kubectl apply
+kubectl rollout status
+kubectl rollout undo
+kubectl scale
+
+Strategies
+
+Rolling Update
+Recreate
+==================================================
+8. SERVICES
+
+Service Types
+
+ClusterIP
+NodePort
+LoadBalancer
+ExternalName
+
+Service Discovery
+
+DNS
+Endpoints
+
+Commands:
+
+kubectl expose
+kubectl get svc
+==================================================
+9. NAMESPACES
+What are Namespaces
+Create Namespaces
+Isolate Resources
+
+Commands:
+
+kubectl create namespace
+kubectl get ns
+
+Use Cases
+
+Dev
+Testing
+Production
+==================================================
+10. CONFIGMAPS & SECRETS
+
+CONFIGMAPS
+
+Store Configuration
+Inject Environment Variables
+
+SECRETS
+
+Sensitive Data
+Secret Mounting
+
+Commands:
+
+kubectl create configmap
+kubectl create secret
+
+Best Practices
+
+Secret Encryption
+External Secret Stores
+==================================================
+11. STORAGE
+
+Volumes
+
+emptyDir
+hostPath
+
+Persistent Storage
+
+Persistent Volumes
+Persistent Volume Claims
+
+Storage Classes
+
+Dynamic Provisioning
+
+Commands:
+
+kubectl get pv
+kubectl get pvc
+==================================================
+12. INGRESS
+What is Ingress
+Ingress Controller
+Routing Rules
+TLS Termination
+
+Controllers
+
+NGINX Ingress
+AWS ALB Ingress
+
+Commands:
+
+kubectl get ingress
+==================================================
+13. NETWORKING
+
+Cluster Networking
+
+Pod Networking
+Service Networking
+
+Network Policies
+
+Allow/Deny Rules
+
+CNI Plugins
+
+Calico
+Flannel
+Cilium
+
+Debugging
+
+DNS Issues
+Connectivity Problems
+==================================================
+14. HEALTH CHECKS
+
+Probes
+
+Liveness Probe
+Readiness Probe
+Startup Probe
+
+Use Cases
+
+Restart Containers
+Traffic Control
+==================================================
+15. RESOURCE MANAGEMENT
+
+Requests
+
+CPU Requests
+Memory Requests
+
+Limits
+
+CPU Limits
+Memory Limits
+
+Quality of Service
+
+Guaranteed
+Burstable
+BestEffort
+
+Commands:
+
+kubectl top
+==================================================
+16. SCALING
+
+Manual Scaling
+
+Replica Scaling
+
+Auto Scaling
+
+HPA
+VPA
+Cluster Autoscaler
+
+Commands:
+
+kubectl autoscale
+==================================================
+17. STATEFUL APPLICATIONS
+StatefulSets
+Stable Identity
+Persistent Storage
+
+Use Cases
+
+Databases
+Kafka
+Redis Clusters
+==================================================
+18. DAEMONSETS & JOBS
+
+DAEMONSETS
+
+Run on Every Node
+
+JOBS
+
+One-time Tasks
+
+CRONJOBS
+
+Scheduled Tasks
+
+Commands:
+
+kubectl create job
+==================================================
+19. SECURITY
+
+Authentication
+
+Certificates
+Tokens
+
+Authorization
+
+RBAC
+
+Pod Security
+
+Security Context
+Pod Security Standards
+
+Secrets Security
+
+Encryption at Rest
+
+Network Security
+
+Network Policies
+==================================================
+20. OBSERVABILITY & MONITORING
+
+Metrics
+
+Metrics Server
+
+Monitoring Tools
+
+Prometheus
+Grafana
+
+Logging
+
+Fluentd
+Loki
+ELK Stack
+
+Tracing
+
+Jaeger
+
+Commands:
+
+kubectl top
+==================================================
+21. TROUBLESHOOTING
+
+Common Issues
+
+CrashLoopBackOff
+ImagePullBackOff
+Pending Pods
+DNS Failures
+
+Debugging Commands
+
+kubectl describe
+kubectl logs
+kubectl exec
+==================================================
+22. HELM
+What is Helm
+Charts
+Repositories
+Install Packages
+Upgrade Releases
+Rollback
+
+Commands:
+
+helm install
+helm upgrade
+helm rollback
+==================================================
+23. OPERATORS & CRDs
+Custom Resource Definitions
+Operators
+Operator Framework
+
+Use Cases
+
+Automating Complex Apps
+==================================================
+24. CI/CD WITH KUBERNETES
+
+Tools
+
+Jenkins
+ArgoCD
+GitHub Actions
+GitLab CI
+
+Deployment Strategies
+
+Rolling Deployments
+Blue Green
+Canary
+
+GitOps
+
+ArgoCD
+FluxCD
+==================================================
+25. CLOUD KUBERNETES
+
+AWS
+
+EKS
+
+Google
+
+GKE
+
+Azure
+
+AKS
+
+Features
+
+Managed Control Plane
+Auto Upgrades
+Integrated Monitoring
+==================================================
+26. REAL-WORLD PROJECTS
+
+BEGINNER
+
+Deploy Nginx
+Deploy Python App
+
+INTERMEDIATE
+
+Full Stack App Deployment
+Ingress Routing
+
+ADVANCED
+
+Multi-service Microservices Platform
+Production Monitoring Stack
+GitOps Deployment Platform
+==================================================
+27. INTERVIEW PREPARATION
+
+Focus
+
+Architecture
+Pods
+Deployments
+Networking
+Storage
+Security
+Troubleshooting
+
+Practice
+
+YAML Writing
+Cluster Debugging
+Scenario-based Questions
+==================================================
+28. ADVANCED KUBERNETES
+Service Mesh
+Istio
+Multi-cluster
+Federation
+Custom Scheduling
+Advanced Security Policies
+==================================================
+29. FINAL GOAL
+
+Master:
+
+Kubernetes Fundamentals
+Cluster Architecture
+Deployments
+Networking
+Storage
+Security
+Monitoring
+Troubleshooting
+Helm
+GitOps
+Production Cluster Operations

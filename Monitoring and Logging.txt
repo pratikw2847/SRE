@@ -1,0 +1,549 @@
+MONITORING & LOGGING ROADMAP FOR SRE
+
+==================================================
+
+INTRODUCTION TO MONITORING & LOGGING
+==================================================
+What is Monitoring
+What is Logging
+Why Monitoring is Critical for SRE
+Reliability Engineering Basics
+Observability vs Monitoring
+Monitoring Pillars
+
+Three Pillars:
+
+Metrics
+Logs
+Traces
+
+Core Goals:
+
+Availability
+Reliability
+Performance
+Incident Detection
+
+Tools:
+
+Prometheus
+Grafana
+ELK Stack
+Loki
+Jaeger
+OpenTelemetry
+==================================================
+2. SRE OBSERVABILITY FUNDAMENTALS
+
+Core Concepts
+
+SLI (Service Level Indicator)
+SLO (Service Level Objective)
+SLA (Service Level Agreement)
+Error Budgets
+
+Golden Signals
+
+Latency
+Traffic
+Errors
+Saturation
+
+RED Method
+
+Rate
+Errors
+Duration
+
+USE Method
+
+Utilization
+Saturation
+Errors
+==================================================
+3. METRICS FUNDAMENTALS
+
+Metric Types
+
+Counter
+Gauge
+Histogram
+Summary
+
+Collection Methods
+
+Pull Model
+Push Model
+
+Metric Sources
+
+Infrastructure Metrics
+Application Metrics
+Business Metrics
+
+Best Practices
+
+Meaningful Labels
+Avoid High Cardinality
+Metric Naming Standards
+==================================================
+4. PROMETHEUS
+
+Introduction
+
+What is Prometheus
+Architecture
+
+Core Components
+
+Prometheus Server
+Exporters
+Alertmanager
+TSDB
+
+Configuration
+
+prometheus.yml
+Scrape Configs
+Targets
+
+Commands
+
+promtool
+==================================================
+5. PROMQL
+
+Query Basics
+
+Selectors
+Filters
+Aggregation
+
+Functions
+
+rate()
+increase()
+avg()
+sum()
+histogram_quantile()
+
+Advanced
+
+Recording Rules
+Alert Expressions
+
+Practice Topics
+
+CPU Usage Queries
+Memory Analysis
+Error Rate Monitoring
+==================================================
+6. EXPORTERS
+
+Infrastructure Exporters
+
+Node Exporter
+Blackbox Exporter
+
+Database Exporters
+
+MySQL Exporter
+PostgreSQL Exporter
+Redis Exporter
+
+Application Exporters
+
+Java Metrics
+Python Metrics
+Go Metrics
+
+Cloud Exporters
+
+CloudWatch Exporter
+==================================================
+7. GRAFANA
+
+Basics
+
+Dashboards
+Panels
+Variables
+
+Visualization
+
+Time Series
+Heatmaps
+Tables
+Alerts
+
+Advanced
+
+Dashboard Variables
+Drilldowns
+Dashboard Provisioning
+
+Best Practices
+
+Actionable Dashboards
+Avoid Dashboard Noise
+==================================================
+8. ALERTING
+
+Alerting Concepts
+
+Alert Rules
+Severity Levels
+Alert Routing
+
+Alertmanager
+
+Routing Trees
+Silencing
+Inhibition
+
+Notifications
+
+Slack
+Email
+PagerDuty
+Opsgenie
+
+Best Practices
+
+Avoid Alert Fatigue
+Actionable Alerts Only
+==================================================
+9. LOGGING FUNDAMENTALS
+
+Types of Logs
+
+Application Logs
+System Logs
+Security Logs
+Audit Logs
+
+Log Levels
+
+DEBUG
+INFO
+WARNING
+ERROR
+CRITICAL
+
+Logging Best Practices
+
+Structured Logging
+JSON Logs
+Correlation IDs
+==================================================
+10. ELK STACK
+
+ELASTICSEARCH
+
+Indexing
+Search
+Query DSL
+
+LOGSTASH
+
+Parsing
+Filtering
+Pipelines
+
+KIBANA
+
+Visualization
+Dashboards
+Search
+
+BEATS
+
+Filebeat
+Metricbeat
+
+Architecture
+
+Log Collection Pipeline
+==================================================
+11. LOKI
+What is Loki
+Loki Architecture
+
+Components
+
+Loki Server
+Promtail
+
+Queries
+
+LogQL
+
+Advantages
+
+Lightweight Logging
+Prometheus Integration
+
+Use Cases
+
+Kubernetes Logging
+==================================================
+12. DISTRIBUTED TRACING
+
+Basics
+
+What is Tracing
+Spans
+Traces
+
+Tools
+
+Jaeger
+Zipkin
+Tempo
+
+Concepts
+
+Root Span
+Child Span
+Trace Propagation
+
+Use Cases
+
+Microservices Debugging
+==================================================
+13. OPENTELEMETRY
+
+Basics
+
+Instrumentation
+Exporters
+Collectors
+
+Signals
+
+Metrics
+Logs
+Traces
+
+Integration
+
+Prometheus
+Grafana
+Jaeger
+==================================================
+14. INFRASTRUCTURE MONITORING
+
+Server Monitoring
+
+CPU
+Memory
+Disk
+Network
+
+Linux Monitoring
+
+top
+htop
+vmstat
+iostat
+sar
+
+Cloud Monitoring
+
+CloudWatch
+GCP Monitoring
+Azure Monitor
+==================================================
+15. APPLICATION MONITORING
+
+Metrics
+
+Response Time
+Throughput
+Error Rate
+
+Health Checks
+
+Readiness Checks
+Liveness Checks
+
+Profiling
+
+CPU Profiling
+Memory Profiling
+
+Tools
+
+New Relic
+Datadog
+Dynatrace
+==================================================
+16. KUBERNETES MONITORING
+
+Metrics
+
+Pod Metrics
+Node Metrics
+Cluster Metrics
+
+Tools
+
+kube-state-metrics
+Metrics Server
+Prometheus Operator
+
+Dashboards
+
+Cluster Health
+Namespace Analysis
+
+Logging
+
+Fluentd
+Loki
+==================================================
+17. CLOUD OBSERVABILITY
+
+AWS
+
+CloudWatch
+X-Ray
+
+GCP
+
+Cloud Monitoring
+Cloud Trace
+
+Azure
+
+Azure Monitor
+
+Multi-cloud Monitoring
+
+Grafana Cloud
+Datadog
+==================================================
+18. INCIDENT RESPONSE
+
+Monitoring During Incidents
+
+Signal Correlation
+Root Cause Analysis
+
+Post Incident
+
+Timeline Analysis
+Logs Review
+Metrics Review
+
+Documentation
+
+Incident Reports
+Postmortems
+==================================================
+19. TROUBLESHOOTING
+
+Common Problems
+
+Missing Metrics
+High Cardinality
+Broken Dashboards
+Log Parsing Failures
+
+Debugging Tools
+
+Promtool
+Grafana Query Inspector
+Kibana Search
+==================================================
+20. AUTOMATION
+
+Monitoring Automation
+
+Dashboard Provisioning
+Alert Provisioning
+
+Infrastructure as Code
+
+Terraform + Monitoring
+
+Auto Remediation
+
+Alert-triggered Scripts
+==================================================
+21. SECURITY MONITORING
+
+Threat Detection
+
+Audit Logs
+Access Monitoring
+
+Tools
+
+Falco
+Wazuh
+SIEM Systems
+
+Alerting
+
+Suspicious Activity Detection
+==================================================
+22. REAL-WORLD PROJECTS
+
+BEGINNER
+
+Monitor Linux Server
+Build Grafana Dashboard
+
+INTERMEDIATE
+
+Kubernetes Monitoring Stack
+ELK Centralized Logging
+
+ADVANCED
+
+Full Observability Platform
+Incident Detection System
+==================================================
+23. INTERVIEW PREPARATION
+
+Focus
+
+Prometheus Architecture
+Grafana Dashboards
+Alerting Rules
+Logging Pipelines
+Distributed Tracing
+Troubleshooting
+
+Practice
+
+Build Dashboards
+Write PromQL Queries
+Incident Scenarios
+==================================================
+24. ADVANCED OBSERVABILITY
+Service Mesh Observability
+eBPF Monitoring
+Real-time Stream Analysis
+AI-driven Alerting
+
+Tools
+
+Cilium
+Pixie
+==================================================
+25. FINAL GOAL
+
+Master:
+
+Metrics Collection
+Prometheus
+Grafana
+Alerting
+Logging Pipelines
+Loki / ELK
+Distributed Tracing
+OpenTelemetry
+Incident Response
+Production Observability Engineering

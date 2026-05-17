@@ -1,0 +1,352 @@
+JENKINS ROADMAP
+
+==================================================
+
+INTRODUCTION TO JENKINS
+==================================================
+What is Jenkins
+Why Jenkins
+CI/CD Basics
+Jenkins Architecture
+Jenkins Controller
+Jenkins Agents
+Plugins
+Jenkins Ecosystem
+
+Tools:
+
+Jenkins Server
+Jenkins CLI
+Jenkins Plugins
+==================================================
+2. INSTALLATION & SETUP
+Install Jenkins on Linux
+Install Jenkins on Docker
+Install Jenkins on Cloud
+Initial Setup
+Unlock Jenkins
+Install Plugins
+
+Commands:
+
+systemctl start jenkins
+systemctl status jenkins
+==================================================
+3. JENKINS UI & BASICS
+Dashboard
+Manage Jenkins
+Build Queue
+Build History
+Workspace
+
+Core Concepts:
+
+Jobs
+Builds
+Workspaces
+Nodes
+==================================================
+4. JOB TYPES
+Freestyle Jobs
+Pipeline Jobs
+Multibranch Pipeline
+Folder Organization
+
+Advanced:
+
+Parameterized Jobs
+Chained Jobs
+==================================================
+5. JENKINS PIPELINES
+
+SCRIPTED PIPELINE
+
+node
+stage
+steps
+
+DECLARATIVE PIPELINE
+
+pipeline
+agent
+stages
+environment
+post
+
+Pipeline Files
+
+Jenkinsfile
+==================================================
+6. BUILD AUTOMATION
+Source Checkout
+Build Triggers
+Scheduling Builds
+SCM Polling
+
+Build Tools:
+
+Maven
+Gradle
+npm
+Python Builds
+==================================================
+7. SOURCE CONTROL INTEGRATION
+Git Integration
+GitHub Integration
+GitLab Integration
+Branch Builds
+Pull Request Builds
+==================================================
+8. AGENTS & DISTRIBUTED BUILDS
+Static Agents
+Dynamic Agents
+Docker Agents
+Kubernetes Agents
+
+Concepts:
+
+Labels
+Executors
+==================================================
+9. ARTIFACT MANAGEMENT
+Archive Artifacts
+Build Retention
+
+External Tools:
+
+Nexus
+Artifactory
+AWS S3
+==================================================
+10. TESTING AUTOMATION
+Unit Tests
+Integration Tests
+Test Reports
+
+Plugins:
+
+JUnit Plugin
+TestNG Plugin
+==================================================
+11. DEPLOYMENT AUTOMATION
+Deploy to Servers
+Deploy to Docker
+Deploy to Kubernetes
+Blue Green Deployments
+Canary Deployments
+==================================================
+12. SECURITY
+Authentication
+Authorization
+Matrix Security
+Role Based Access
+
+Secrets:
+
+Credentials Plugin
+Secret Management
+==================================================
+13. DOCKER + JENKINS
+Docker Pipelines
+Docker Agents
+Build Images
+Push to Registry
+==================================================
+14. CLOUD INTEGRATION
+AWS Jenkins
+Azure Jenkins
+GCP Jenkins
+
+Services:
+
+EC2 Agents
+EKS Builds
+==================================================
+15. MONITORING & LOGGING
+Build Logs
+Pipeline Monitoring
+Metrics
+
+Tools:
+
+Prometheus
+Grafana
+==================================================
+16. TROUBLESHOOTING
+Failed Builds
+Plugin Conflicts
+Agent Disconnects
+Workspace Issues
+==================================================
+17. BACKUP & RECOVERY
+Jenkins Home Backup
+Restore Strategy
+Disaster Recovery
+==================================================
+18. PROJECTS
+
+BEGINNER
+
+Build Java App
+Build Python App
+
+INTERMEDIATE
+
+Docker Build Pipeline
+Multi-stage Deployments
+
+ADVANCED
+
+Kubernetes Deployment Pipeline
+Enterprise CI/CD Platform
+==================================================
+19. INTERVIEW PREPARATION
+
+Focus:
+
+Jenkins Architecture
+Pipelines
+Plugins
+Security
+Troubleshooting
+==================================================
+20. FINAL GOAL
+
+Master:
+
+Jenkins Administration
+Pipeline Engineering
+Distributed Builds
+CI/CD Automation
+Security
+Production Deployment Pipelines
+TEAMCITY ROADMAP
+
+==================================================
+
+INTRODUCTION TO TEAMCITY
+==================================================
+What is TeamCity
+Why TeamCity
+TeamCity Architecture
+Build Agents
+Build Server
+
+Tools:
+
+TeamCity Server
+Build Agents
+==================================================
+2. INSTALLATION & SETUP
+Install TeamCity Server
+Setup Agents
+Initial Configuration
+==================================================
+3. TEAMCITY UI & BASICS
+Dashboard
+Projects
+Build Configurations
+Agents View
+==================================================
+4. BUILD CONFIGURATIONS
+Create Build Configs
+Build Steps
+Build Triggers
+Parameters
+==================================================
+5. VERSION CONTROL INTEGRATION
+Git
+GitHub
+GitLab
+Bitbucket
+==================================================
+6. BUILD STEPS
+Command Line Runner
+Maven Runner
+Gradle Runner
+Docker Runner
+==================================================
+7. BUILD CHAINS
+Snapshot Dependencies
+Artifact Dependencies
+==================================================
+8. AGENTS
+Install Agents
+Agent Pools
+Agent Parameters
+==================================================
+9. ARTIFACT MANAGEMENT
+Store Artifacts
+Publish Artifacts
+Artifact Cleanup
+==================================================
+10. TESTING AUTOMATION
+Unit Testing
+Integration Testing
+Test Reports
+==================================================
+11. DEPLOYMENTS
+Docker Deployment
+Kubernetes Deployment
+Cloud Deployment
+==================================================
+12. SECURITY
+Authentication
+Permissions
+Secrets Management
+==================================================
+13. DOCKER + TEAMCITY
+Docker Build Pipelines
+Push to Registry
+==================================================
+14. CLOUD INTEGRATION
+AWS Integration
+Azure Integration
+Kubernetes Integration
+==================================================
+15. MONITORING & LOGGING
+Build Logs
+Metrics
+Alerts
+==================================================
+16. TROUBLESHOOTING
+Failed Builds
+Agent Offline Issues
+Configuration Problems
+==================================================
+17. BACKUP & RECOVERY
+Backup Server
+Restore Agents
+==================================================
+18. PROJECTS
+
+BEGINNER
+
+Build App Pipeline
+
+INTERMEDIATE
+
+Docker Build Workflow
+
+ADVANCED
+
+Enterprise CI/CD Setup
+==================================================
+19. INTERVIEW PREPARATION
+
+Focus:
+
+Build Configurations
+Agents
+Dependencies
+Troubleshooting
+==================================================
+20. FINAL GOAL
+
+Master:
+
+TeamCity Administration
+Build Pipelines
+Distributed Builds
+Deployment Automation
+Enterprise CI/CD Systems
