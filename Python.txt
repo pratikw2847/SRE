@@ -1,532 +1,185 @@
-PYTHON ROADMAP FOR SRE + SOFTWARE ENGINEERING
+Python Day 1/90: Basics & Environment
+1. Introduction to Python
 
-==================================================
-1. INTRODUCTION TO PYTHON
-==================================================
+• Why Python for SRE? (Readability, massive libraries, automation).
 
-- What is Python
-- Installing Python
-- Python Versions
-- Python Interpreter
-- Running Python Scripts
-- pip Package Manager
-- Virtual Environments
+• Python 2 vs Python 3 (Always use Python 3).
 
-Tools:
-- python
-- pip
-- venv
+• How Python runs: The Interpreter.
 
-==================================================
-2. PYTHON BASICS
-==================================================
+2. Setting up the Environment
+• Checking version: `python3 --version`.
 
-- Variables
-- Data Types
-  - int
-  - float
-  - str
-  - bool
-  - list
-  - tuple
-  - set
-  - dict
-- Type Casting
-- Input/Output
-- Comments
-- Operators
+• Writing your first script: `hello.py`.
 
-==================================================
-3. CONTROL FLOW
-==================================================
+• Using the REPL (Interactive Shell).
 
-- if
-- else
-- elif
-- Nested Conditions
-- for Loop
-- while Loop
-- break
-- continue
-- pass
+3. Basic Data Types & Variables
+A variable is a name used to store data in memory.
+A data type defines the kind of value a variable can store.
 
-==================================================
-4. FUNCTIONS
-==================================================
+while using variable in print statement always user {} for variable
 
-- Function Definition
-- Arguments
-- Return Values
-- Default Parameters
-- Keyword Arguments
-- Lambda Functions
-- Recursion
-- Scope
-- *args
-- **kwargs
+• Strings: Storing text (e.g., `"server-01"`).
+variable.upper()- Prints everythin in upper case
+variable.lower()- Prints everything in lower case
+variable.title()- Prints start of everything in upper
+variable.split()- seperates everyword after space
 
-==================================================
-5. DATA STRUCTURES
-==================================================
+• Integers/Floats: Numbers (e.g., `port = 8080`).
 
-LISTS
-- append
-- insert
-- remove
-- pop
-- slicing
-- sorting
+• Booleans: True/False (e.g., `is_running = True`).
 
-TUPLES
-SETS
-DICTIONARIES
+• Type Checking: Using `type()`.
+Type checking means checking the data type of a variable to know what kind of value it stores (like integer, string, float, list, etc.).
+x = 10
+print(type(x))
 
-Advanced:
-- List Comprehension
-- Dictionary Comprehension
-- Nested Structures
+4. Basic Input/Output
 
-==================================================
-6. STRING HANDLING
-==================================================
+By default input has data type string you need to mention at time of integer age = int(input("what is your age"))
 
-- String Methods
-- Formatting
-- f-strings
-- split
-- join
-- replace
-- strip
+• `print()` function: Outputting data to console.
+print(f"My name is {name} and I am {age} years old. I am working at {org} with position {position}")
+• `input()` function: Taking user input (e.g., "Enter server name").
+name = input("What is your name? ")
 
-Modules:
-- re (Regular Expressions)
+Practical Tasks for Tonight:
+1. Print "Hello SRE World" on your terminal.
 
-==================================================
-7. FILE HANDLING
-==================================================
+2. Create variables for a server name, IP address, and status, then print them.
 
-- Read Files
-- Write Files
-- Append Files
-- with Statement
-- CSV Handling
-- JSON Handling
+3. Use `input()` to ask the user for their name and then print a welcome message.
+name = input("What is your name? ")
+age = input("How old are you? ")
+org = input("What is your organization? ")
+position = input("What is your position? ")
 
-Modules:
-- os
-- pathlib
-- json
-- csv
+print(f"My name is {name} and I am {age} years old. I am working at {org} with position {position}")
 
-==================================================
-8. ERROR HANDLING
-==================================================
 
-- try
-- except
-- finally
-- raise
-- Custom Exceptions
+Python Day 2/90: Operators & Conditional Statements
+1. Python Operators
+• Arithmetic: `+`, `-`, `*`, `/`, `%` (Remainder).
 
-==================================================
-9. MODULES & PACKAGES
-==================================================
+• Comparison: `==` (Equal), `!=` (Not equal), `>`, `<`, `>=`, `<=`.
 
-- import
-- from import
-- Creating Modules
-- Creating Packages
-- __init__.py
+• Logical: `and`, `or`, `not` (Used to combine multiple conditions).
 
-Popular Modules:
-- math
-- random
-- datetime
-- collections
-- itertools
+All operations are same but only if need to write 2^5 2 raise to 5 you can use 2**5
+If you require input in decimal then use 10/3 but you require output in round figure use 10//3
 
-==================================================
-10. OBJECT ORIENTED PROGRAMMING (OOP)
-==================================================
+2. Conditional Statements (Making Decisions)
+• if: Executes code only if the condition is true.
 
-- Classes
-- Objects
-- Constructors
-- Instance Variables
-- Class Variables
-- Methods
+• elif: Checks another condition if the previous one was false.
 
-Concepts:
-- Encapsulation
-- Inheritance
-- Polymorphism
-- Abstraction
+• else: Executes if none of the above conditions are true.
 
-Advanced:
-- Magic Methods
-- Decorators
-- Property Decorators
-- Dataclasses
+• Indentation: Crucial in Python! Always use 4 spaces (or one Tab) for the code block inside `if/else`.
 
-==================================================
-11. ADVANCED PYTHON
-==================================================
-
-- Iterators
-- Generators
-- Decorators
-- Context Managers
-- Closures
-- Multithreading
-- Multiprocessing
-- Asyncio
-- GIL
-
-==================================================
-12. PYTHON FOR AUTOMATION
-==================================================
-
-SYSTEM AUTOMATION
-- os
-- subprocess
-- shutil
-
-FILE AUTOMATION
-- PDF handling
-- Excel handling
-- CSV automation
-
-WEB AUTOMATION
-- requests
-- BeautifulSoup
-- Selenium
-
-EMAIL AUTOMATION
-- smtplib
-
-TASK AUTOMATION
-- cron jobs
-- scheduling
-
-==================================================
-13. PYTHON FOR SRE
-==================================================
-
-- Log Parsing
-- Monitoring Scripts
-- Health Check Scripts
-- API Automation
-- Server Automation
-- Backup Scripts
-- Deployment Scripts
-
-Modules:
-- requests
-- paramiko
-- psutil
-- subprocess
-
-==================================================
-14. DATA STRUCTURES & ALGORITHMS (DSA)
-==================================================
-
-ARRAYS
-- Traversal
-- Searching
-- Sorting
-
-STRINGS
-- Pattern Matching
-- Palindrome
-- Sliding Window
-
-LINKED LIST
-- Singly Linked List
-- Doubly Linked List
-
-STACK
-QUEUE
-DEQUE
-
-HASHMAP
-HASHSET
-
-TREES
-- Binary Tree
-- BST
-- Heap
-- Trie
-
-GRAPHS
-- BFS
-- DFS
-- Dijkstra
-- Topological Sort
-
-==================================================
-15. ALGORITHMS
-==================================================
-
-SORTING
-- Bubble Sort
-- Selection Sort
-- Insertion Sort
-- Merge Sort
-- Quick Sort
-- Heap Sort
-
-SEARCHING
-- Linear Search
-- Binary Search
-
-RECURSION
-BACKTRACKING
-
-DYNAMIC PROGRAMMING
-GREEDY ALGORITHMS
-
-==================================================
-16. PROBLEM SOLVING
-==================================================
-
-Platforms:
-- LeetCode
-- HackerRank
-- Codeforces
-- GeeksforGeeks
-
-Topics:
-- Time Complexity
-- Space Complexity
-- Optimization
-- Edge Cases
-
-==================================================
-17. DATABASES WITH PYTHON
-==================================================
-
-SQL
-- SQLite
-- PostgreSQL
-- MySQL
-
-ORM
-- SQLAlchemy
-
-NoSQL
-- MongoDB
-
-Topics:
-- CRUD Operations
-- Transactions
-- Connection Pooling
-
-==================================================
-18. API DEVELOPMENT
-==================================================
-
-REST APIs
-- Flask
-- FastAPI
-- Django REST Framework
-
-Topics:
-- Routing
-- JSON
-- Authentication
-- Middleware
-- Error Handling
-
-==================================================
-19. WEB DEVELOPMENT
-==================================================
-
-FLASK
-- Templates
-- Routing
-- Forms
-
-DJANGO
-- Models
-- Views
-- Templates
-- Authentication
-- Admin Panel
-
-==================================================
-20. TESTING IN PYTHON
-==================================================
-
-- unittest
-- pytest
-- mocking
-- integration testing
-
-Topics:
-- Test Coverage
-- Assertions
-- Fixtures
-
-==================================================
-21. APPLICATION LEVEL CODING
-==================================================
-
-BUILD PROJECTS:
-- Authentication System
-- Chat Application
-- Task Manager
-- API Gateway
-- Monitoring Dashboard
-- Log Analyzer
-- URL Shortener
-- File Upload Service
-
-Concepts:
-- Clean Architecture
-- MVC
-- Dependency Injection
-- Design Patterns
-
-==================================================
-22. DEVOPS & CLOUD WITH PYTHON
-==================================================
-
-- AWS SDK (boto3)
-- GCP SDK
-- Azure SDK
-- Terraform Automation
-- Kubernetes Automation
-
-Topics:
-- CI/CD Scripts
-- Infrastructure Automation
-- Monitoring Automation
-
-==================================================
-23. CONCURRENCY & SCALABILITY
-==================================================
-
-- Threading
-- Multiprocessing
-- Async Programming
-- Queues
-- Workers
-
-Advanced:
-- Celery
-- Redis
-- Kafka
-
-==================================================
-24. SECURITY IN PYTHON
-==================================================
-
-- Secure Coding
-- Environment Variables
-- Secrets Management
-- JWT
-- OAuth
-- Input Validation
-
-==================================================
-25. SYSTEM DESIGN BASICS
-==================================================
-
-- Load Balancing
-- Caching
-- Database Scaling
-- Message Queues
-- Microservices
-
-==================================================
-26. ADVANCED SOFTWARE ENGINEERING
-==================================================
-
-- Design Patterns
-- SOLID Principles
-- Clean Code
-- Refactoring
-- Logging
-- Monitoring
-- Observability
-
-==================================================
-27. IMPORTANT PYTHON LIBRARIES
-==================================================
-
-GENERAL
-- requests
-- pandas
-- numpy
-
-AUTOMATION
-- selenium
-- paramiko
-- psutil
-
-WEB
-- flask
-- django
-- fastapi
-
-DATA
-- sqlalchemy
-- pymongo
-
-TESTING
-- pytest
-
-==================================================
-28. PYTHON PROJECTS FOR PRACTICE
-==================================================
-
-BEGINNER
-- Calculator
-- To-Do App
-- File Organizer
-
-INTERMEDIATE
-- Web Scraper
-- REST API
-- Log Analyzer
-- Chat App
-
-ADVANCED
-- Kubernetes Monitoring Tool
-- CI/CD Automation
-- Distributed Task Queue
-- Real-Time Notification System
-
-==================================================
-29. INTERVIEW PREPARATION
-==================================================
-
-Focus:
-- DSA
-- OOP
-- System Design
-- Python Internals
-- Concurrency
-- API Design
-
-Practice:
-- LeetCode Medium/Hard
-- Mock Interviews
-- Real Projects
-
-==================================================
-30. FINAL GOAL
-==================================================
-
-Master:
-- Python Fundamentals
-- Automation
-- DSA
-- Backend Development
-- API Development
-- System Design
-- Scalable Applications
-- DevOps Automation
-- Production-Level Coding
+3. SRE Logic Example
 ```
 
+disk_space = 92
+
+if disk_space > 95:
+
+    print("ALERT: Disk is almost full!")
+
+elif disk_space > 80:
+
+    print("WARNING: Disk space is getting low.")
+
+else:
+
+    print("SUCCESS: Sufficient disk space available.")
+	
+	storage = int(input("What is storage on D mount point "))
+
+if storage > 90:
+    print(f"{storage} is greater than 90 you need to clean space")
+elif storage < 90:
+    print(f"{storage} is less than 90 no need to clean space")
+else:
+    print(f"{storage} is  equal to 90")
+	
+	service_status = input("Please enter service status: ")
+
+if service_status == "started":
+    print("Service is working")
+elif service_status == "stopped":
+    print("Service is stopping")
+else:
+    print("Service is does not exist")
+
+```
+
+Practical Tasks for Tonight:
+1. Calculator: Ask for two numbers and print their sum and difference.
+
+2. Access Control: Ask for age; if 18 or above print "Access Granted", else "Access Denied".
+
+3. Service Checker: Create a variable `service_status = "stopped"`. Write an `if-else` to print "Start Service" if it's stopped, and "Service Running" if it's anything else.
+
+4. Data Type Conversion: Remember to use `int()` when taking numerical input: `num = int(input("Enter number: "))`.
+
+
+Python Day 3/90: Lists & For Loops (SRE Essentials)
+1. Python Lists (Arrays)
+• What is a List? A way to store multiple items in a single variable (e.g., list of servers).
+
+• Syntax: `servers = ["prod-web-01", "prod-db-01", "stage-app-01"]`
+
+• Indexing: Accessing elements using numbers (Starts from 0).
+
+  • `print(servers[0])` -> Prints `"prod-web-01"`
+
+  • `print(servers[-1])` -> Prints the last item (`"stage-app-01"`).
+
+• List Methods (Crucial for SRE):
+
+  • `servers.append("prod-lb-01")` -> Adds a new server to the end.
+
+  • `servers.remove("stage-app-01")` -> Deletes an item.
+
+  • `len(servers)` -> Gives the total count of servers.
+
+2. The 'For' Loop (Automation Backbone)
+• Why Loops? Instead of checking 100 servers manually, a loop does it in 2 lines of code.
+
+• Syntax:
+
+```
+
+servers = ["web-01", "web-02", "web-03"]
+
+for server in servers:
+
+    print(f"Deploying application to {server}")
+
+```
+
+3. Combining Loops and If-Else (Real SRE Logic)
+```
+
+servers = ["prod-web", "stage-db", "prod-api", "test-vm"]
+
+for server in servers:
+
+    if "prod" in server:
+
+        print(f"CRITICAL: {server} belongs to Production!")
+
+    else:
+
+        print(f"INFO: {server} is a non-prod environment.")
+
+```
+
+Practical Tasks for Tonight (Day 3):
+1. IP List: Create a list of 4 IP addresses. Append a 5th IP to it, then print the total length using `len()`.
+
+2. Bulk Deployment: Create a list of 3 service names (e.g., `"nginx"`, `"mysql"`, `"docker"`). Use a `for` loop to print `"Restarting {service}..."` for each one.
+
+3. Filter Task: Create a list of numbers from 1 to 10. Write a loop with an `if` condition to print only the Even numbers (Hint: use `% 2 == 0`).
