@@ -1,25 +1,164 @@
 Linux & Linux Internals: Day 1/15 Syllabus
+
+hardware - physical components
+users and applications interact with hardware
+
+users/apps --> os --> hardware
+OS is a program that knows how to use hardware
+
+
+Why linux prefered over linux?
+linux is opensource
+Linux is secure compared to other os
+Linux separates normal users from the root (admin) user.
+Most Linux distributions (like Ubuntu, Fedora, or Debian) push security patches quickly through centralized package managers.
+Instead of downloading random .exe files from websites, Linux users usually install software from signed official repos.
+
+
 1. Linux Architecture & Internals (The Core)
 • The Layers: Hardware -> Kernel -> Shell -> User Space Applications.
 
+Linux kernal - 
+process memory disc network managment is handled by kernal
+linux is not actual operating is system linux kernal plus additional packages(features) combined together creates a operating system
+eg ubuntu redhat amazon debian centos
+
+ Linux distributions
+ Package manager - Help you to download/deploy dependecies softwares like python nginx and many more. It also help you to update upgrade and delete the packages
+ 
+ ubuntu - apt
+ 
+
+
 • Kernel Space vs User Space:
 
+when a program run it basically runs in two spaces 1 - user space 2 - kernal space
+User space and kernel space are two separate parts of an operating system that work together to keep the computer both useful and safe. Kernel space is where the kernel, the core part of the operating system, runs with complete access to the computer’s hardware and memory. It can control the CPU, manage RAM, talk directly to devices like disks and network cards, and decide which programs get resources. User space, on the other hand, is where normal applications like your browser, text editor, or terminal run. These programs do not have direct access to hardware or critical system memory because giving them that power would make the system unstable and insecure. Instead, when a program in user space needs to do something important—such as saving a file, opening a webpage, or allocating more memory—it sends a request to the kernel through something called a system call. The kernel checks whether the request is valid and safe, performs the action if allowed, and then sends the result back to the program.
+
+Like if i am creating a text file so user space dont have direct access to hardware so when i execute command touch it goes from user space to kernal via system call and then kernal interact with hardware and creates a file.
+
   • Kernel Space: Protected memory area where the core OS, memory management, and hardware drivers run. Full hardware access.
+  
+  
 
   • User Space: Restricted memory area where user applications (Python scripts, Web servers, `ls` command) run.
 
 • System Calls (Syscalls): How User Space applications request privileges or hardware access from the Kernel (e.g., `open()`, `read()`, `write()`, `fork()`).
+A system call is the mechanism through which a program running in user space requests a service from the kernel (kernel space). Since user-space programs cannot directly access hardware, memory management, or critical system resources, they must ask the kernel to perform these operations on their behalf.
+
+file related system calls - 
+open() → Opens a file
+read() → Reads data from a file
+write() → Writes data to a file
+close() → Closes an opened file
+unlink() → Deletes a file
+Why important:
+Allows safe file operations while the kernel manages permissions and storage consistency.
+
+device related system calls - 
+ioctl() → Device-specific control
+Example: Changing terminal settings
+read() → Reads from device
+Example: Reading keyboard input
+write() → Writes to device
+Example: Sending output to printe
+Why important:
+Lets software interact with hardware through kernel-managed drivers.
+
+Information related system calls - 
+getpid() → Gets process ID
+uname() → Gets OS information
+time() → Gets system time
+stat() → Gets file metadata
+Why important:
+Helps programs make decisions based on system state.
+
+
+process related system calls - 
+fork() → Creates child process
+exec() → Loads new program into process
+wait() → Waits for child process
+exit() → Ends process
+Why important:
+Makes process management and multitasking possible.
+
+communication related system calls - 
+pipe() → Creates communication channel
+Example: ls | grep txt
+socket() → Creates network endpoint
+Example: Browser connecting to websit
+Why important:
+Enables collaboration between local and remote processes.
+
+
+User Program → System Call → Kernel → Hardware/System Resource → Result Returned
+
+
 
 2. File System Hierarchy Standard (FHS) Internals
-• `/etc`: System-wide configuration files (e.g., network settings, user databases).
+FHS is the organizational blueprint that makes Linux predictable, maintainable, and portable across different distributions.
 
-• `/var/log`: Centralized system and application logs (Critical for SRE troubleshooting).
+root@ubuntu-dev:/#
+user - root
+ubuntu - hostname
+/ - present working directory
 
-• `/proc`: A virtual/pseudo filesystem in RAM (not on disk) providing real-time kernel, hardware, and running process metadata.
+/bin — Essential User Commands
+eg  /bin/ls , /bin/cp
 
-• `/bin` & `/sbin`: Essential user and system administration command binaries.
+/sbin — Essential System Binaries
+Contains system administration commands like:
+/sbin/reboot
+
+/etc — Configuration Files
+/etc/passwd
+/etc/hostname
+
+/home — User Home Directories
+/home/user/Documents
+
+/root — Root User’s Home
+
+/lib and /lib64 — Shared Libraries
+Contains libraries required by programs in /bin and /sbin
+/lib/libc.so
+
+/usr — User Programs and Libraries
+/usr/bin → Most user commands
+/usr/bin/python
+
+/var — Variable Data
+Stores data that changes frequently.
+/var/log/
+/var/cache/
+/var/spool/
+
+/tmp — Temporary Files
+/tmp/install.log
+
+
+/dev — Device Files
+Represents hardware devices as files.
+
+/proc — Process and Kernel Information
+A virtual filesystem created by the kernel.
+/proc/cpuinfo
+/proc/meminfo
+
+/sys — Kernel Device Interface
+Provides detailed hardware and kernel subsystem information.
+
+/boot — Boot Loader Files
+Contains files needed to boot Linux.
+
+/mnt and /media — Mounted Filesystems
+Used for mounting external storage.
+/media/usb
+/mnt/backup
 
 3. Kernel Inspection & Navigation Commands
+uname -a command gives all information about kernal 
+
 • `ls -ltr`: Lists files sorted by modification time in reverse (SRE favorite for finding recent logs).
 
 • `cat /proc/cpuinfo`: Inspects CPU architecture directly from the Kernel.
@@ -34,3 +173,66 @@ Practical Tasks for Tomorrow Morning:
 2. Run `cat /proc/meminfo` and inspect `MemTotal` vs `MemAvailable`.
 
 3. Open `man grep` to study system call level integration and filtering options.
+
+===============================================================================================================================================================================
+🐧 Linux Day 2/15: Process Management & Signals (SRE Kernel Inspection)
+1. What is a Process? (The Infrastructure Runtime)
+• Process vs Program: A program is passive code sitting on your disk (e.g., Nginx binary, Python script). A process is that program actively running in the RAM (execution state).
+
+• Process ID (PID): Every running process gets a unique numerical ID assigned by the kernel.
+
+  • `PID 1` is always reserved for the system initialization daemon (`systemd` or `init`), which is the parent of all other processes.
+
+• Process States (Crucial for SRE Debugging):
+
+  • `R` (Running/Runnable): Currently actively utilizing CPU cycles or waiting in the CPU run-queue.
+
+  • `S` (Interruptible Sleep): Waiting for an event or system resource to become available (Most common state).
+
+  • `D` (Uninterruptible Sleep): Process is waiting for critical Hardware I/O (like a slow disk read or network block). Cannot be killed instantly by signals.
+
+  • `Z` (Zombie Process): The process has completed execution but remains in the process table because its Parent process hasn't read its exit status yet. Reclaims memory but holds a PID slot.
+
+---
+
+2. Process Execution Types
+• Foreground: Tasks that hijack your terminal session. You must wait for them to finish before entering the next command (e.g., running `ping [suspicious link removed]` directly).
+
+• Background: Running a task without blocking your shell. Append an ampersand `&` to the end of your command (e.g., `python3 automation.py &`). This allows you to keep typing other commands.
+
+• Daemons: System processes that start at boot time and run silently in the background to handle continuous infrastructure requests (e.g., `sshd` for SSH connections, `crond` for cron jobs).
+
+---
+
+3. Core Linux Signals (Inter-Process Communication)
+Signals are asynchronous notifications sent by the kernel or a user to tell a running process how to behave.
+
+🛑 The Absolute Mandatory SRE Signals:
+
+1. SIGTERM (Signal 15) - Graceful Shutdown: Asks the process to stop safely. The process will catch this signal, save its state, flush data to logs, close database connections, and exit nicely. (Command: `kill `)
+
+2. SIGKILL (Signal 9) - Hard Force Kill: The kernel forcefully destroys the process instantly. The process cannot catch or ignore this. Warning: It might cause file corruption since it doesn't clean up data. (Command: `kill -9 `)
+
+3. SIGHUP (Signal 1) - Hangup / Dynamic Reload: Used by SREs to tell a background service (like Nginx or Apache) to reload its configuration files without restarting or causing downtime. (Command: `kill -1 `)
+
+---
+
+4. Heavy-Duty SRE Commands for Process Inspection
+• `ps aux` or `ps -ef`: Takes a static snapshot of all active processes currently tracked by the kernel.
+
+• `top` / `htop`: Real-time interactive screen showing high CPU/RAM consuming processes dynamically.
+
+• `kill`, `pkill`, `killall`: Commands used to dispatch signals to target PIDs or process names.
+
+• `jobs`, `bg`, `fg`: Local shell utilities to move processes between foreground and background.
+
+---
+
+🛠️ Practical Tasks for Tomorrow Morning:
+1. Run a background dummy process: `sleep 600 &`
+
+2. Locate its process identifier using: `ps aux | grep sleep`
+
+3. Try terminating it nicely using `kill -15 `. If it's running, drop a hard kill using `kill -9 ` and verify it's gone.
+
+4. Open `top`, find the column labeled `S` (State), and observe how many processes are in the `S` (Sleep) state versus the `R` (Running) state.

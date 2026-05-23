@@ -1,3 +1,5 @@
+IN PYTHON SYNTAX IS VERY VERY NECESSARY
+
 Python Day 1/90: Basics & Environment
 1. Introduction to Python
 
@@ -25,6 +27,7 @@ variable.upper()- Prints everythin in upper case
 variable.lower()- Prints everything in lower case
 variable.title()- Prints start of everything in upper
 variable.split()- seperates everyword after space
+variable[0-4] - will print first 4 letters
 
 • Integers/Floats: Numbers (e.g., `port = 8080`).
 
@@ -57,7 +60,7 @@ position = input("What is your position? ")
 
 print(f"My name is {name} and I am {age} years old. I am working at {org} with position {position}")
 
-
+============================================================================================================================================================================
 Python Day 2/90: Operators & Conditional Statements
 1. Python Operators
 • Arithmetic: `+`, `-`, `*`, `/`, `%` (Remainder).
@@ -124,10 +127,14 @@ Practical Tasks for Tonight:
 
 4. Data Type Conversion: Remember to use `int()` when taking numerical input: `num = int(input("Enter number: "))`.
 
-
+===========================================================================================================================================================================
 Python Day 3/90: Lists & For Loops (SRE Essentials)
 1. Python Lists (Arrays)
 • What is a List? A way to store multiple items in a single variable (e.g., list of servers).
+
+
+
+
 
 • Syntax: `servers = ["prod-web-01", "prod-db-01", "stage-app-01"]`
 
@@ -144,9 +151,32 @@ Python Day 3/90: Lists & For Loops (SRE Essentials)
   • `servers.remove("stage-app-01")` -> Deletes an item.
 
   • `len(servers)` -> Gives the total count of servers.
+  
+  users = ["Pratik", "Ramesh", "Wadekar"]
+users.append("Pranav") - add new user to list
+users.remove("Pratik") - remove user from list
+users.insert(0, "Shiro") - insert user at specific index of the list
+del users[3] - delete user from specific index from list
+print(len(users))
+for user in users:
+    print(user)
+	
+users.sort() - sort users alphabetically
+users.reverse() - sort reverse alphabetically
+
+removed = users.pop() - remove item and store it to another variable
+
+set = [1, 2,4, -1, 10, -2]
+minimum = min(set)
+maximum = max(set)
+sum = sum(set)
+print(sum)
+print(minimum)
+print(maximum)
 
 2. The 'For' Loop (Automation Backbone)
 • Why Loops? Instead of checking 100 servers manually, a loop does it in 2 lines of code.
+Execute a block of code for each iteam in the sequence
 
 • Syntax:
 
@@ -180,6 +210,330 @@ for server in servers:
 Practical Tasks for Tonight (Day 3):
 1. IP List: Create a list of 4 IP addresses. Append a 5th IP to it, then print the total length using `len()`.
 
+ip_list = ["10.128.1.11", "10.128.1.12", "10.128.1.13", "10.128.1.14"]
+ip_list.append("10.128.1.15")
+for i in ip_list:
+    print(i)
+    print("\n")
+
 2. Bulk Deployment: Create a list of 3 service names (e.g., `"nginx"`, `"mysql"`, `"docker"`). Use a `for` loop to print `"Restarting {service}..."` for each one.
 
+services = ["docker", "nginx", "mysql"]
+for service in services:
+    print(service)
+
 3. Filter Task: Create a list of numbers from 1 to 10. Write a loop with an `if` condition to print only the Even numbers (Hint: use `% 2 == 0`).
+
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+for number in numbers:
+    if number % 2 == 0:
+        print(f"{number} is Even Number")
+    else:
+        print(f"{number} is Odd number ")
+		
+================================================================================================================================================================================
+
+🐍 Python Day 4/90: Dictionaries & Advanced Control Flow (SRE Infrastructure Automation)
+1. Python Dictionaries (`dict`)
+• What is a Dictionary? A collection of Key-Value pairs. In SRE, lists are great for multiple items (like a list of IPs), but Dictionaries are crucial for storing detailed metadata about a single object (like server details, cloud configuration, or user details).
+
+• Syntax: Enclosed in curly braces `{}`. KEYS must be strings, VALUES can be any data type.
+
+```
+
+server = {
+
+    "hostname": "prod-web-01",
+
+    "ip": "10.0.0.15",
+
+    "cpu": 4,
+
+    "ram": 16,
+
+    "status": "Healthy"
+
+}
+
+```
+
+
+🛠️ Dictionary Operations & Methods (Crucial Syntax)
+
+• Accessing Values: Use the key inside square brackets `[]` or the `.get()` method.
+
+```
+
+print(server["hostname"])  # Outputs: prod-web-01
+
+print(server.get("status")) # Outputs: Healthy
+
+```
+
+• Adding/Modifying Items: Simply assign a value to a new or existing key.
+
+```
+
+server["env"] = "Production"   # Adds a new key-value pair
+
+server["ram"] = 32             # Modifies existing value from 16 to 32
+
+```
+
+• Deleting Items: Use `del` or `.pop()`.
+
+```
+
+del server["status"]           # Deletes the key "status"
+
+removed_val = server.pop("cpu") # Removes "cpu" and stores its value (4)
+
+```
+
+• Checking Existence: Use the `in` operator.
+
+```
+
+if "ip" in server:
+
+    print(f"IP address exists: {server['ip']}")
+
+```
+
+
+---
+
+2. Advanced Loops: Dictionary Iteration & Loop Controls
+• Iterating through Dictionaries: You can loop through keys, values, or both together using `.items()`.
+
+```
+
+# Looping through both Key and Value
+
+for key, value in server.items():
+
+    print(f"{key.upper()}: {value}")
+
+```
+
+
+🛑 Loop Control Statements: `break` and `continue`
+
+• `break`: Terminates the loop completely when a specific condition is met. (Used to stop looking once you find a critical error).
+
+• `continue`: Skips the current iteration and jumps directly to the next item in the loop. (Used to skip non-critical issues or healthy servers).
+
+---
+
+3. Real SRE Automation Logic Examples
+💡 Example A: Looping through a List of Dictionaries (Simulating an API/Cloud inventory)
+
+```
+
+infrastructure = [
+
+    {"name": "prod-db", "status": "CRITICAL"},
+
+    {"name": "stage-web", "status": "HEALTHY"},
+
+    {"name": "prod-lb", "status": "DOWN"},
+
+    {"name": "test-vm", "status": "HEALTHY"}
+
+]
+
+for device in infrastructure:
+
+    if device["status"] == "HEALTHY":
+
+        continue  # Skip healthy devices, no action needed
+
+    
+
+    print(f"ALERT: {device['name']} requires attention! Current Status: {device['status']}")
+
+```
+
+💡 Example B: Early Exit using `break`
+
+```
+
+services = ["nginx", "mysql", "unauthorized-malware-process", "docker"]
+
+for service in services:
+
+    if service == "unauthorized-malware-process":
+
+        print(f"SECURITY ALERT: {service} detected! Locking down system down immediately.")
+
+        break  # STOP checking other services, trigger emergency lockdown
+
+    print(f"Verifying system service: {service} -> Safe")
+
+```
+
+---
+
+🛠️ Practical Tasks for Tonight (Day 4)
+Task 1: Server Profile
+
+Create a dictionary named `target_server` with keys: `hostname`, `ip`, `role`, and `is_active` (Boolean).
+
+1. Print the IP address using syntax `{target_server['ip']}` inside an f-string.
+
+2. Add a new key `region` with value `"ap-south-1"`.
+
+3. Print the entire updated dictionary.
+
+Task 2: Log Scanner (Using `continue`)
+
+Create a list of log levels: `log_data = ["INFO", "DEBUG", "ERROR", "INFO", "CRITICAL", "DEBUG"]`. Write a loop to process these logs. If the log is "INFO" or "DEBUG", use `continue` to skip it. Only print when an "ERROR" or "CRITICAL" log is encountered.
+
+Task 3: Port Checker (Using `break`)
+
+You have a list of scanning ports: `ports = [80, 443, 22, 8080, 9090]`. Write a loop that prints `"Scanning port {port}..."`. If the loop encounters port `22`, print `"Critical Port 22 found! Stopping scan for security compliance."` and exit the loop using `break`.
+
+=====================================================================================================================================================================================
+
+
+🐍 Python Day 5/90: Functions & Error Handling (SRE Automation Engineering)
+1. Python Functions (`def`)
+• What is a Function? A reusable block of code that performs a specific action. Instead of writing the same 10 lines of code every time you want to check a server, you wrap it in a function and call it with one line.
+
+• Syntax: Defined using the `def` keyword, followed by the function name, arguments in `()`, and indentation.
+
+```
+
+def check_status(server_name):
+
+    print(f"Checking infrastructure connectivity for: {server_name}")
+
+# Calling the function
+
+check_status("prod-web-01")
+
+```
+
+
+🧠 Return Values (`return`)
+
+Functions can send data back to the main script using the `return` statement. Once a function hits `return`, it exits immediately.
+
+```
+
+def calculate_cpu_free(total, used):
+
+    free = total - used
+
+    return free
+
+remaining_cpu = calculate_cpu_free(16, 12)
+
+print(f"Available CPU: {remaining_cpu} GB")
+
+```
+
+---
+
+2. Robust Automation: Error Handling (`try-except`)
+In SRE, automation scripts run against production systems. If a server is down, your script shouldn't crash (`Traceback Error`); it should handle the failure gracefully, log it, and continue checking other systems. This is called Fault Tolerance.
+
+🛠️ The `try-except-finally` Block Syntax
+
+```
+
+try:
+
+    # Code that might crash (e.g., division by zero, missing keys, connection timeout)
+
+    result = 10 / 0
+
+except ZeroDivisionError as e:
+
+    # Code that runs ONLY if a specific crash happens
+
+    print(f"ALERT: Mathematical anomaly detected -> {e}")
+
+except Exception as e:
+
+    # Catch-all generic block for any other unexpected failures
+
+    print(f"CRITICAL: Unexpected infrastructure failure: {e}")
+
+finally:
+
+    # This block ALWAYS runs no matter what (Used to close open connections/files)
+
+    print("Execution segment finished. Cleaning up system states.")
+
+```
+
+---
+
+3. Real SRE Automation Logic: Combining Dictionaries, Functions & Error Handling
+```
+
+def parse_device_config(server_profile):
+
+    try:
+
+        hostname = server_profile["hostname"]
+
+        ip = server_profile["ip"]
+
+        print(f"DEPLOYMENT: Successfully initiated stream to {hostname} via tunnel {ip}")
+
+    except KeyError as missing_key:
+
+        print(f"ERROR: Configuration metadata is corrupt! Missing field: {missing_key}")
+
+# Test Cases
+
+good_server = {"hostname": "prod-db-01", "ip": "10.0.0.4"}
+
+bad_server = {"hostname": "stage-app-02"} # Missing 'ip' key
+
+parse_device_config(good_server)
+
+parse_device_config(bad_server) # Will not crash! Handles error cleanly.
+
+```
+
+---
+
+🛠️ Practical Tasks for Today (Day 5)
+Task 1: Disk Space Alerter Function
+
+Write a function named `check_disk_threshold(usage)` that accepts an integer.
+
+• If `usage > 90`, it should return the string `"CRITICAL"`.
+
+• If `usage > 75`, it should return `"WARNING"`.
+
+• Otherwise, it should return `"OK"`. Call the function passing `82` as a parameter and print the returned status message.
+
+Task 2: Fault-Tolerant Conversion (Try-Except)
+
+SRE scripts often read metrics as text strings. Write a block that takes an input `port_input = "8080"` and converts it to an integer using `int()`. Wrap this inside a `try-except` block.
+
+• Test it first with `"8080"`.
+
+• Then test it by changing `port_input = "8080-TCP"` (which will fail conversion) and make sure your `except ValueError:` block prints a clean message: `"Invalid port configuration data format!"` instead of crashing your terminal.
+
+Task 3: The SRE Final Triple Combo (List + Dict + Function + Error)
+
+Create a list containing 2 server profiles:
+
+```
+
+fleet = [
+
+    {"name": "prod-lb", "port": 443},
+
+    {"name": "test-vm"} # Notice this profile is missing the 'port' key!
+
+]
+
+```
+
+Write a `for` loop to iterate through the `fleet`. Inside the loop, call a custom function that prints `f"Connecting to {server['name']} on port {server['port']}..."`. Use a `try-except KeyError` inside the function so that when the loop processes the `test-vm`, it prints a clean error message and doesn't halt the iteration loop.
