@@ -178,29 +178,84 @@ Practical Tasks for Tomorrow Morning:
 🐧 Linux Day 2/15: Process Management & Signals (SRE Kernel Inspection)
 1. What is a Process? (The Infrastructure Runtime)
 • Process vs Program: A program is passive code sitting on your disk (e.g., Nginx binary, Python script). A process is that program actively running in the RAM (execution state).
+A program is simply a passive set of instructions stored on disk. It is an executable file that contains code written to perform some task.
+A process, on the other hand, is an active instance of a program that is currently running in memory.
+
+
+If you have a shell script file this file is a program. It is just a set of instructions stored on disk. Nothing is happening while it just sits there as a file.
+When you execute it Linux creates a process for it. Here’s what happens internally
+The shell asks the kernel to run the file using a system call like exec().
+The kernel loads the program into memory.
+Since it’s a shell script (not raw machine code), Linux starts the interpreter (/bin/bash because of #!/bin/bash).
+Bash reads the script line by line and executes those commands.
+While it is running, it is a process with its own PID, memory, and CPU time.
+When execution finishes, the process ends.
+
+ps aux - it will show cpu utilization and memory utilization as well
+ps -ef - it will show all process in full format
+kill -STOP pid - it will stop the process
+kill -CONT pid - it will resume the process
+
+
+The nice command in Linux is used to start a process with a specific priority level for CPU scheduling.
+-20 → Highest priority (least “nice” to others)
+0 → Default priority
+19 → Lowest priority (very “nice” to others)
+nice -n 10 python script.py
+
+nice is used to start a new process with a specific priority (nice value).
+renice is used to change the priority of a process that is already running.
+
+with the help of top and ps -el command we can see nice number of any process
+
 
 • Process ID (PID): Every running process gets a unique numerical ID assigned by the kernel.
 
   • `PID 1` is always reserved for the system initialization daemon (`systemd` or `init`), which is the parent of all other processes.
 
-• Process States (Crucial for SRE Debugging):
 
-  • `R` (Running/Runnable): Currently actively utilizing CPU cycles or waiting in the CPU run-queue.
+Process States
+R — Running / Runnable
+This means the process is either:
+Currently executing on the CPU, or Ready to run and waiting in the CPU scheduler queue for CPU time
 
-  • `S` (Interruptible Sleep): Waiting for an event or system resource to become available (Most common state).
+S — Interruptible Sleep
+This means the process is waiting for some event or resource and can be interrupted by signals.
+eg Waiting for timer expiration
 
-  • `D` (Uninterruptible Sleep): Process is waiting for critical Hardware I/O (like a slow disk read or network block). Cannot be killed instantly by signals.
+D — Uninterruptible Sleep
+his means the process is waiting for critical I/O operations and cannot respond to signals immediately.
+Usually happens when waiting for:
+Disk reads/writes
+Network filesystem delays
+Hardware device response
+Blocked storage
 
-  • `Z` (Zombie Process): The process has completed execution but remains in the process table because its Parent process hasn't read its exit status yet. Reclaims memory but holds a PID slot.
+Z — Zombie Process
+A zombie process has:
+Finished execution
+Released memory/resources
+But still has an entry in process table
+It exists because its parent process has not yet collected its exit status using:
 
----
+Process Execution Types
 
-2. Process Execution Types
-• Foreground: Tasks that hijack your terminal session. You must wait for them to finish before entering the next command (e.g., running `ping [suspicious link removed]` directly).
+Foreground Process
+Runs attached to your terminal.
+It takes control of your shell, and you must wait until it finishes before typing another command.
+ping google.com
 
-• Background: Running a task without blocking your shell. Append an ampersand `&` to the end of your command (e.g., `python3 automation.py &`). This allows you to keep typing other commands.
+Background Process
+Runs without blocking your terminal.
+python automation.py &
 
-• Daemons: System processes that start at boot time and run silently in the background to handle continuous infrastructure requests (e.g., `sshd` for SSH connections, `crond` for cron jobs).
+A daemon is a special background process that:
+Starts automatically at boot
+Runs continuously
+Provides system services
+Usually has no terminal attached
+nginx → web server daemon
+sshd → handles SSH connections
 
 ---
 
@@ -209,23 +264,63 @@ Signals are asynchronous notifications sent by the kernel or a user to tell a ru
 
 🛑 The Absolute Mandatory SRE Signals:
 
-1. SIGTERM (Signal 15) - Graceful Shutdown: Asks the process to stop safely. The process will catch this signal, save its state, flush data to logs, close database connections, and exit nicely. (Command: `kill `)
+1. SIGTERM (Signal 15) — Graceful Shutdown
+This is the default signal sent when you use:
+kill -15 PID
+SIGTERM politely asks the process:
 
-2. SIGKILL (Signal 9) - Hard Force Kill: The kernel forcefully destroys the process instantly. The process cannot catch or ignore this. Warning: It might cause file corruption since it doesn't clean up data. (Command: `kill -9 `)
+“Please stop now and clean up before exiting.”
 
-3. SIGHUP (Signal 1) - Hangup / Dynamic Reload: Used by SREs to tell a background service (like Nginx or Apache) to reload its configuration files without restarting or causing downtime. (Command: `kill -1 `)
+The process gets a chance to:
+
+Save unsaved data
+Flush logs to disk
+Close files safely
+Finish active requests
+Close database/network connections
+Release resources properly
+
+2. SIGKILL (Signal 9) — Force Kill
+kill -9 PID
+This tells the kernel:
+
+“Destroy this process immediately.”
+
+The kernel instantly removes the process from memory.
+
+The process:
+
+Cannot catch it
+Cannot ignore it
+Cannot clean up
+Cannot save data
+
+
+3. SIGHUP (Signal 1) — Reload / Hangup
+kill -1 PID
+“Reload your configuration without stopping.”
+This is very useful for production services.
+If you update an Nginx config file, instead of restarting Nginx (which could briefly interrupt service), you send:
+kill -1 nginx_pid
 
 ---
 
 4. Heavy-Duty SRE Commands for Process Inspection
-• `ps aux` or `ps -ef`: Takes a static snapshot of all active processes currently tracked by the kernel.
 
-• `top` / `htop`: Real-time interactive screen showing high CPU/RAM consuming processes dynamically.
+1. ps aux / ps -ef → Static Process Snapshot
+These commands show a one-time snapshot of all processes currently tracked by the kernel.
 
-• `kill`, `pkill`, `killall`: Commands used to dispatch signals to target PIDs or process names.
+2. top / htop → Real-Time Process Monitoring
+These show a live updating process view.
 
-• `jobs`, `bg`, `fg`: Local shell utilities to move processes between foreground and background.
+3. kill, pkill, killall → Send Signals to Processes
+These commands send signals like:
+SIGTERM (15)
+SIGKILL (9)
+SIGHUP (1)
 
+4. jobs, bg, fg → Shell Job Control
+These manage processes started from your current shell session.
 ---
 
 🛠️ Practical Tasks for Tomorrow Morning:
@@ -236,3 +331,70 @@ Signals are asynchronous notifications sent by the kernel or a user to tell a ru
 3. Try terminating it nicely using `kill -15 `. If it's running, drop a hard kill using `kill -9 ` and verify it's gone.
 
 4. Open `top`, find the column labeled `S` (State), and observe how many processes are in the `S` (Sleep) state versus the `R` (Running) state.
+=====================================================================================================================================================================================
+
+🐧 Linux & Linux Internals Day 3/15: Advanced Process Monitoring & Troubleshooting Internals
+1. Deep Dive: High Load Average & CPU Contention Internals
+When an SRE runs `uptime` or `top` on a lagging production server, they see three numbers for Load Average (representing 1, 5, and 15-minute intervals).
+
+• What Load Average Actually Means to the Kernel: It is NOT just CPU usage. The load average is the average number of processes in a runnable state (`R` state, waiting for or using CPU) PLUS processes in an uninterruptible sleep state (`D` state, waiting for disk/network hardware responses).
+
+• CPU-Bound vs. I/O-Bound Load:
+
+  • CPU-Bound: High load average accompanied by high CPU utilization percentages (processes are fighting for CPU time slices).
+
+  • I/O-Bound: High load average but low CPU utilization percentages. This indicates that processes are stuck in `D` state waiting on slow disks or network storage (NFS).
+
+---
+
+2. Kernel Real-Time Performance Analytics Utilities
+To debug infrastructure issues, an SRE needs tools that peel back the abstraction layer of the hardware:
+
+A. `top` / `htop` Internals
+
+• Lists active system threads.
+
+• Key Fields to Watch:
+
+  • `VIRT` (Virtual Size): Total memory the process has mapped (including shared libraries and swapped memory).
+
+  • `RES` (Resident Size): The actual physical RAM the process is occupying right now. (Crucial for detecting memory leaks).
+
+  • `%CPU` & `%MEM`: Task resource consumption chunks.
+
+B. `ps` (Process Status) Advanced Flags
+
+• `ps aux`: `a` = show processes for all users, `u` = display user-oriented format, `x` = lift the requirement for a controlling terminal (displays daemons).
+
+• `ps -ef`: `e` = select all processes, `f` = full-format listing (shows Parent Process IDs via `PPID`). Great for tracing parent-child execution loops.
+
+C. `strace` (System Call Tracer) - The SRE Secret Weapon
+
+• What it does: Intercepts and records the system calls called by a process and the signals received by a process.
+
+• SRE Use Case: If an application hangs during initialization, `strace -p ` reveals exactly which system call (like `open()` or `connect()`) it is currently blocked on.
+
+---
+
+3. Managing Process Priorities: `nice` and `renice`
+The Linux kernel uses an internal task scheduler to distribute CPU cycles. SREs can influence this scheduler using priority values called Niceness.
+
+• Nice Range: `-20` (Highest priority, least nice to others) to `19` (Lowest priority, very nice). Default value is `0`.
+
+• Commands:
+
+  • `nice -n 10 python3 backup.py`: Starts a background backup script with lower priority so it won't steal CPU cycles from production web traffic.
+
+  • `renice -n -5 -p `: Dynamically escalates an already running process to a higher priority (requires root privileges).
+
+---
+
+🛠️ Advanced Internals Lab Tasks for Day 3:
+1. Run `uptime` and parse your local 1, 5, and 15-minute load averages.
+
+2. Launch a command: `sleep 1000 &`. Use `ps -ef | grep sleep` to extract its `PID` as well as its Parent PID (`PPID`). Verify that its parent is your active bash shell instance.
+
+3. Attach to a process using `strace`: Run `strace df -h`. Observe the flood of underlying `openat()`, `statfs()`, and `write()` system calls executed just to print disk space!
+
+4. Launch a low-priority process: `nice -n 15 top -b > /dev/null &` and verify its niceness value (`NI` column) inside `htop` or `ps -eo pid,ni,comm`.
+=====================================================================================================================================================================================

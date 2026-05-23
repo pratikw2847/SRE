@@ -237,6 +237,7 @@ for number in numbers:
 1. Python Dictionaries (`dict`)
 • What is a Dictionary? A collection of Key-Value pairs. In SRE, lists are great for multiple items (like a list of IPs), but Dictionaries are crucial for storing detailed metadata about a single object (like server details, cloud configuration, or user details).
 
+
 • Syntax: Enclosed in curly braces `{}`. KEYS must be strings, VALUES can be any data type.
 
 ```
@@ -254,6 +255,22 @@ server = {
     "status": "Healthy"
 
 }
+
+servers = {
+    "ip": "10.128.1.11",
+    "hostname": "production",
+    "type": "web server",
+    "cpu": 2
+}
+print(servers)
+print(servers["type"])
+
+
+print(servers.get("storage"))
+
+
+In Python, .get() is a dictionary method used to safely retrieve the value associated with a given key.
+So .get() is mainly used when you want to avoid program crashes if a key might be missing if any value is there associated with key it will print that value if not if will print none
 
 ```
 
@@ -278,6 +295,18 @@ server["env"] = "Production"   # Adds a new key-value pair
 
 server["ram"] = 32             # Modifies existing value from 16 to 32
 
+servers = {
+    "ip": "10.128.1.11",
+    "hostname": "production",
+    "type": "web server",
+    "cpu": 2
+}
+print(servers)
+print(servers["type"])
+print(servers.get("storage"))
+servers["Ram"] = "32 GB"
+print(servers)
+
 ```
 
 • Deleting Items: Use `del` or `.pop()`.
@@ -287,6 +316,9 @@ server["ram"] = 32             # Modifies existing value from 16 to 32
 del server["status"]           # Deletes the key "status"
 
 removed_val = server.pop("cpu") # Removes "cpu" and stores its value (4)
+
+del servers["hostname"]
+print(servers)
 
 ```
 
@@ -299,7 +331,8 @@ if "ip" in server:
     print(f"IP address exists: {server['ip']}")
 
 ```
-
+if "ip" in servers:
+    print(servers["ip"])
 
 ---
 
@@ -313,6 +346,14 @@ if "ip" in server:
 for key, value in server.items():
 
     print(f"{key.upper()}: {value}")
+	
+for specification,value in servers.items():
+    if specification == "ip":
+        print(f"{specification} has value {value}")
+    else:
+        print(f"{specification} not exists ")
+		
+this is when server is directory
 
 ```
 
@@ -325,7 +366,7 @@ for key, value in server.items():
 
 ---
 
-3. Real SRE Automation Logic Examples
+3. Real SRE Automation Logic Examples	
 💡 Example A: Looping through a List of Dictionaries (Simulating an API/Cloud inventory)
 
 ```
@@ -356,6 +397,24 @@ for device in infrastructure:
 
 💡 Example B: Early Exit using `break`
 
+
+servers = [
+    {"Server_type": "Production", "ip": "10.128.1.11"},
+    {"Server_type": "QA", "ip": "10.128.1.12"},
+    {"Server_type": "DEV", "ip": "10.128.1.13"},
+    {"Server_type": "STG", "ip": "10.128.1.14"}
+]
+
+server_down = input("Which server is down? ")
+
+for server in servers:
+    if server["ip"] == server_down:
+        print(f"The server is down having IP {server['ip']} belongs to {server['Server_type']}")
+        break
+else:
+    print("Server IP not found")
+	
+This is when server is list of directories
 ```
 
 services = ["nginx", "mysql", "unauthorized-malware-process", "docker"]
