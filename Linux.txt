@@ -334,16 +334,40 @@ These manage processes started from your current shell session.
 =====================================================================================================================================================================================
 
 🐧 Linux & Linux Internals Day 3/15: Advanced Process Monitoring & Troubleshooting Internals
-1. Deep Dive: High Load Average & CPU Contention Internals
-When an SRE runs `uptime` or `top` on a lagging production server, they see three numbers for Load Average (representing 1, 5, and 15-minute intervals).
+Load avarage - load avarage helps us understand how busy linux server is.
 
-• What Load Average Actually Means to the Kernel: It is NOT just CPU usage. The load average is the average number of processes in a runnable state (`R` state, waiting for or using CPU) PLUS processes in an uninterruptible sleep state (`D` state, waiting for disk/network hardware responses).
+we can use uptime command to see load avagrge
+it will show how long you server has been up and 
+load avarage : 0.07, 0.05, 0.01
 
-• CPU-Bound vs. I/O-Bound Load:
+first number (0.07) - defines load past 1 minute
+second number (0.05) - defines load past 5 minute
+third number (0.01) - defines load past 15 minute
 
-  • CPU-Bound: High load average accompanied by high CPU utilization percentages (processes are fighting for CPU time slices).
+lscpu - commands to see how many cpu are there for server
+also you can htop
+cat /proc/cpuinfo
 
-  • I/O-Bound: High load average but low CPU utilization percentages. This indicates that processes are stuck in `D` state waiting on slow disks or network storage (NFS).
+if you have 2 cpu and any of these values goes to 2 then you say that cpu is at its 100% of capacity
+
+
+you can use cat /proc/loadavg
+
+htop also gives load avagrge
+
+
+CPU-bound load
+Suppose your server has 4 CPU cores and uptime shows:
+load average: 12.0
+That means about 12 processes want CPU/I/O, but only 4 can run at once.
+What’s happening internally:
+Too many runnable processes (R)
+Scheduler queue becomes crowded
+
+I/O-bound load
+Suppose load average is still high:
+Because processes are stuck in D state waiting for hardware.
+
 
 ---
 
@@ -352,32 +376,70 @@ To debug infrastructure issues, an SRE needs tools that peel back the abstractio
 
 A. `top` / `htop` Internals
 
-• Lists active system threads.
+This is about understanding process/thread memory and CPU usage using top, which is very important for SRE troubleshooting.
+when you use top command the screen get updated every 3 second
 
-• Key Fields to Watch:
+child process - the process created by another process
+zombie process - A zombie process is a process that has finished execution (it is dead) but still has an entry in the Linux process table because its parent process has not collected its exit status yet.
 
-  • `VIRT` (Virtual Size): Total memory the process has mapped (including shared libraries and swapped memory).
+top command will show
+uptime of system load avarage
+tasks  total running sleeping stopped zombie
+%cpu userspace systemspace niceness(priority) id(ideal - higher the % less busy cpu is)   wi (waiting - higher the % worse for server) hi(hardware interupt) si(software interupt) st
+MiB mem - totalmem free used cache
+MiB swap - total free used avail mem
 
-  • `RES` (Resident Size): The actual physical RAM the process is occupying right now. (Crucial for detecting memory leaks).
+MiB Mem (Physical Memory): This represents your actual, physical RAM (Random Access Memory) hardware installed on the server.
+MiB Swap (Virtual Memory): This is a designated space on your Hard Drive or SSD (either a dedicated swap partition or a swap file) that the Linux kernel uses as an extension of your RAM.
 
-  • `%CPU` & `%MEM`: Task resource consumption chunks.
+The Scenario: Imagine a sudden traffic spike hits your application, or a developer writes a piece of code that causes a temporary memory leak.
+
+Without Swap: The moment your RAM hits 100%, the Linux kernel has no choice but to trigger the OOM (Out Of Memory) Killer. It will immediately terminate your primary process (like your Docker container, Java app, or Database) to keep the operating system alive. Your application goes down completely.
+
+With Swap: Swap acts as an overflow cushion. The system slows down because it's using the disk, but it stays alive. It gives your autoscaling policies time to kick in, or gives you (the SRE) time to log in, investigate, and fix the issue before a total outage occurs.
+
+the Swap space rarely consumes more than 1% to 3% of the total SSD storage.
+
+htop -
+you can install htop with package manager
+
+you can use f2 to customize your htop
+
+top is the universal, built-in text-only utility that works on every server by default, while htop is its modern, color-coded, interactive upgrade that supports mouse clicks, scrolling, and easy process filtering.
+
 
 B. `ps` (Process Status) Advanced Flags
 
 • `ps aux`: `a` = show processes for all users, `u` = display user-oriented format, `x` = lift the requirement for a controlling terminal (displays daemons).
+ps aux focuses heavily on resource consumption (CPU and Memory percentages).
 
 • `ps -ef`: `e` = select all processes, `f` = full-format listing (shows Parent Process IDs via `PPID`). Great for tracing parent-child execution loops.
+ps -ef focuses heavily on process relationships and lineage (Parent-Child tracking).
+
+
 
 C. `strace` (System Call Tracer) - The SRE Secret Weapon
-
+ stace command traces system calls and signals
+ 
 • What it does: Intercepts and records the system calls called by a process and the signals received by a process.
 
 • SRE Use Case: If an application hangs during initialization, `strace -p ` reveals exactly which system call (like `open()` or `connect()`) it is currently blocked on.
+strace  -f  -o trace_report.log  bash  script.sh
+strace - command 
+-f - follows child process
+-o - output
+trace_report.log - saves strace logs in this file
+bash - interpretor
+script.sh - shell script
+
+
 
 ---
 
 3. Managing Process Priorities: `nice` and `renice`
 The Linux kernel uses an internal task scheduler to distribute CPU cycles. SREs can influence this scheduler using priority values called Niceness.
+
+ps -el command to check nice number
 
 • Nice Range: `-20` (Highest priority, least nice to others) to `19` (Lowest priority, very nice). Default value is `0`.
 
@@ -397,4 +459,169 @@ The Linux kernel uses an internal task scheduler to distribute CPU cycles. SREs 
 3. Attach to a process using `strace`: Run `strace df -h`. Observe the flood of underlying `openat()`, `statfs()`, and `write()` system calls executed just to print disk space!
 
 4. Launch a low-priority process: `nice -n 15 top -b > /dev/null &` and verify its niceness value (`NI` column) inside `htop` or `ps -eo pid,ni,comm`.
-=====================================================================================================================================================================================
+===================================================================================================================================================================================== 
+
+======================================================================
+               LINUX INTERNALS SYLLABUS: DAY 4/15
+   THE LINUX BOOT PROCESS, SYSTEMD, & ZOMBIE REAPING ARCHITECTURE
+======================================================================
+
+TOPIC 1: THE 6 STAGES OF THE LINUX BOOT PROCESS
+----------------------------------------------------------------------
+
+* Stage 1: BIOS / UEFI Phase & POST (Power-On Self-Test) Dynamics
+The process starts when you press power button to start your computer
+Then first program called bios or uefi boots up
+These are basically pieces of software that gets all the main part of your computer ready for action. Keyboard screen harddrive etc
+
+BIOS 
+Bios is tied to MBR (master boot record) which limit disk size till 2 TB
+slower boot time
+less secure boot
+
+UEFI
+UEFI uses GUID Partion Table GPT removing these size contrains 
+Faster boot time
+secure boot
+
+BIOS/UEFI runs POST 
+These test makes sure all different hardware are working right before fully turning everything on
+
+* Stage 2: MBR (Master Boot Record) & Partition Table Scanning
+Boot loader code present in MBR
+
+
+* Stage 3: GRUB2 (Grand Unified Bootloader) Execution & Kernel Selection
+1 - Locate operating system kernal
+2 - load kernal into computers memory
+3 - Start running kernal code
+
+
+* Stage 4: Kernel Initialization & 'initramfs' Temporary File System Mount
+After bootloader starts kernal the kernal takes over and start initiating the background process and services
+
+
+* Stage 5: Parent Process Initialization (The Birth of 'systemd' / PID 1)
+systemd has responsibility to get the system booted and ready to use.
+It also checks any hardware remains to load
+Just write down that systemd is assigned PID 1 (Process ID 1) and acts as the "parent" of all other programs.
+
+
+* Stage 6: Systemd Targets & Runlevels Initialization (multi-user.target)
+ systemd uses target configuration files to decide which mode you it should booting into 
+ 
+
+
+TOPIC 2: SYSTEMD & PRODUCTION SERVICE MANAGEMENT
+----------------------------------------------------------------------
+ systemd is an init system and its more important process runs on your server havng PID 1
+systemd is first process that starts on your system and its job to start other process on the system
+
+Units in systemd are basically resouces that are mananged by systemd
+these includes services timers mounts automounts
+we are focusing more on services here
+
+systemctl is the master command-line tool used to manage and control systemd services,
+
+install apache
+systemctl status http - check status
+systemclt start http - start http
+systemctl stop http - stop the service
+systemctl restart http - restart (if change in there in cofig file)
+
+systemctl enable http - enables service
+systemctl disable http - disables service - Prevents the service from starting automatically at boot.
+
+systemctl mask http - The ultimate lock. It ensures the service cannot be started by anyone or anything, even if manually triggered, until you explicitly unmask it.
+
+systemctl unmask http - To restore the unit back to its native operational state
+
+
+service files
+service files are just text files that contains instruction that tell systemd how to manage that particular serice
+/lib/systemd/system/http.service
+/etc/systemd/system
+/run/systemd/system
+
+etc --> run --> lib priority 
+
+systemctl daemon-reload  - Must be run every single time you create, delete, or edit a service text file so systemd can update its internal dependency trees.
+
+
+
+TOPIC 3: ANATOMY OF A ZOMBIE PROCESS & REAPING MECHANISMS
+----------------------------------------------------------------------
+* Architectural Definition of a Zombie Process (STAT: Z)
+A Zombie Process (denoted by Z in ps or top utility outputs) is a process that has completed execution via the exit() system call but still occupies an entry slot inside the kernel's process table.
+It is not a running or executable piece of code; it is merely a dead shell. When a process terminates, the operating system releases all of its allocated hardware physical memory (RAM), open file descriptors, and CPU structures
+
+* The SRE Production Risk: PID Slot Exhaustion vs Hardware Resources
+* The 'exit()' System Call vs Parent 'wait()' / 'waitpid()' Neglect
+The Child Exit: The child process completes its operational loop or encounters an error and triggers the exit() system call. It moves into the TASK_ZOMBIE state.
+The Parent Duty: The parent process is expected to continuously execute a blocking or non-blocking wait() or waitpid() system call.
+
+
+* SIGCHLD Signal Mechanics 
+* Resolution Workflows: Finding the PPID, forcing a reap, and parent termination
+* Orphan Process Adoption & Reaping Procedures by PID 1 (systemd)
+
+ps -ef | grep -w Z
+kill -9 parent id
+TOPIC 4: JOURNALD LOG ISOLATION LAYER
+----------------------------------------------------------------------
+systemd-journald is a background service (daemon) that collects and stores log data across your Linux system, 
+while journalctl is the command-line tool you use to query and view those logs.
+
+journalctl -u -f httpd
+-u unit in this case is httpd
+-f follow prints live log
+======================================================================
+
+======================================================================
+  LINUX INTERNALS SYLLABUS: DAY 5/15
+  LINUX NETWORKING, PORT BINDING & SOCKET DIAGNOSTICS
+======================================================================
+
+TOPIC 1: THE LINUX NETWORK LAYER & INTERFACE MAPPING
+----------------------------------------------------------------------
+* Understanding Local Network Adapters and Logical Framing:
+  - Loopback Interface mechanics ('lo' / 127.0.0.1)
+  - Predictable Network Interface Names ('eth0', 'ens33', 'enp0s3')
+
+* The Core 'ip' Toolchain Syntax for Interface Diagnostics:
+  - ip address show (Analyzing IP assignments, subnet masks, and scopes)
+  - ip link show (Verifying Layer 2 hardware link state: UP/DOWN, MTU limits)
+  - ip route show (Inspecting the Kernel Routing Table and Default Gateway paths)
+
+
+TOPIC 2: SOCKET STATISTICS & PORT BINDING MECHANICS
+----------------------------------------------------------------------
+* Understanding Network Socket Binding:
+  - Privileged / System Ports (0 - 1023) vs. Ephemeral Ports (1024 - 65535)
+  - Common service mappings (SSH: 22, HTTP: 80, HTTPS: 443, MySQL: 3306)
+
+* The Modern 'ss' (Socket Statistics) Toolchain:
+  - Investigating active kernel socket states
+  - Execution flags mapping: ss -tulpn (-t, -u, -l, -p, -n mechanics)
+
+
+TOPIC 3: NETWORK TROUBLESHOOTING & ROUTING DIAGNOSTICS
+----------------------------------------------------------------------
+* Low-Level Connectivity Testing & Path Tracing:
+  - ping (Testing ICMP echo requests and measuring round-trip latency)
+  - traceroute / mtr (Tracking hop-by-hop router pathways and packet drop zones)
+
+* Domain Name System (DNS) Interrogation:
+  - dig (Querying DNS records, nameservers, and TTL values)
+  - dig +short (Filtering clean IP outputs for automation scripting loops)
+
+
+TOPIC 4: APPLICATION-LAYER TRANSPORT TESTING ('curl' & 'nc')
+----------------------------------------------------------------------
+* HTTP Stack Validation:
+  - curl -Iv (Fetching HTTP response headers and diagnosing SSL/TLS handshakes)
+
+* Netcat ('nc') Infrastructure Probing:
+  - Scanning remote raw socket endpoints to identify firewall blocks
+  - Execution syntax: nc -zv <Remote_IP> <Port>
+======================================================================

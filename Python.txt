@@ -364,6 +364,8 @@ this is when server is directory
 
 • `continue`: Skips the current iteration and jumps directly to the next item in the loop. (Used to skip non-critical issues or healthy servers).
 
+difference between continue and break is if we use break then it will break the loop when condition is fulfiled and continue when the condition is fulfiled it will go to next iteration insted going to else block 
+
 ---
 
 3. Real SRE Automation Logic Examples	
@@ -429,7 +431,8 @@ for service in services:
 
     print(f"Verifying system service: {service} -> Safe")
 
-```
+`
+
 
 ---
 
@@ -457,7 +460,11 @@ You have a list of scanning ports: `ports = [80, 443, 22, 8080, 9090]`. Write a 
 
 🐍 Python Day 5/90: Functions & Error Handling (SRE Automation Engineering)
 1. Python Functions (`def`)
-• What is a Function? A reusable block of code that performs a specific action. Instead of writing the same 10 lines of code every time you want to check a server, you wrap it in a function and call it with one line.
+• What is a Function? A reusable block of code that performs a specific action. 
+Instead of writing the same 10 lines of code every time you want to check a server, you wrap it in a function and call it with one line.
+block of code which performs some task and run when its called.
+this can be used mau times in programe to lessen the lines of code.
+we can pass arguments in this method
 
 • Syntax: Defined using the `def` keyword, followed by the function name, arguments in `()`, and indentation.
 
@@ -470,6 +477,28 @@ def check_status(server_name):
 # Calling the function
 
 check_status("prod-web-01")
+
+servers_status = input("Enter server status: ")
+def server_availability(servers_status):
+    if servers_status == "Running":
+        print("Server is UP")
+    else:
+        print("Server is DOWN")
+
+server_availability(servers_status)
+
+
+def myfun()
+	print("Function is called")
+
+myfun()
+
+def - define
+myfun() - function name
+() - argument which needs to pass 
+
+myfun() - call the function
+
 
 ```
 
@@ -490,12 +519,20 @@ remaining_cpu = calculate_cpu_free(16, 12)
 
 print(f"Available CPU: {remaining_cpu} GB")
 
+if you use * before any argument in main fuction it will consider it as list
+if you use ** it will consider it as dictionary
+dynamic argument should be used at last
+
+we can use import module to call function from another file this way you dont need to write function or program in single file
+
+
 ```
 
 ---
 
 2. Robust Automation: Error Handling (`try-except`)
 In SRE, automation scripts run against production systems. If a server is down, your script shouldn't crash (`Traceback Error`); it should handle the failure gracefully, log it, and continue checking other systems. This is called Fault Tolerance.
+
 
 🛠️ The `try-except-finally` Block Syntax
 
@@ -524,6 +561,10 @@ finally:
     # This block ALWAYS runs no matter what (Used to close open connections/files)
 
     print("Execution segment finished. Cleaning up system states.")
+
+.isalpha() checks:
+only letters → True
+numbers / symbols / mixed text → False
 
 ```
 
@@ -596,3 +637,31 @@ fleet = [
 ```
 
 Write a `for` loop to iterate through the `fleet`. Inside the loop, call a custom function that prints `f"Connecting to {server['name']} on port {server['port']}..."`. Use a `try-except KeyError` inside the function so that when the loop processes the `test-vm`, it prints a clean error message and doesn't halt the iteration loop.
+
+================================================================================================================================
+
+============================================================
+🐍 PYTHON DAY 6: FILE I/O & OS MODULE AUTOMATION
+============================================================
+
+[1] FILE HANDLING (with open)
+------------------------------------------------------------
+> Purpose: To read and write server log files & configurations without manual effort.
+• Read Mode ('r')   : Opens a file for reading text. Throws FileNotFoundError if file missing.
+• Write Mode ('w')  : Opens a file for writing. Overwrites existing data completely.
+• Append Mode ('a') : Appends new data at the end of the file. Best for system logs.
+
+[2] THE OS MODULE (System-Level Automation)
+------------------------------------------------------------
+> Purpose: To interact with the underlying operating system (Linux/Windows) directories.
+• os.getcwd()       : Returns the Current Working Directory of the script.
+• os.listdir()      : Returns a list of all files and folders inside a directory.
+• os.path.exists()  : Checks if a specific file or folder exists on the server.
+
+[3] TUPLES (The Immutable Read-Only List)
+------------------------------------------------------------
+• Definition: Similar to a List, but IT CANNOT BE CHANGED after creation.
+• Syntax    : Written with round brackets `()`.
+• Example   : server_config = ("prod-db-01", "10.0.0.4", 8080)
+• SRE Use   : Storing fixed parameters like Ports or Cloud Regions.
+===============================================================================================================================
