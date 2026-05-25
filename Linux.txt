@@ -584,44 +584,186 @@ journalctl -u -f httpd
 
 TOPIC 1: THE LINUX NETWORK LAYER & INTERFACE MAPPING
 ----------------------------------------------------------------------
-* Understanding Local Network Adapters and Logical Framing:
-  - Loopback Interface mechanics ('lo' / 127.0.0.1)
-  - Predictable Network Interface Names ('eth0', 'ens33', 'enp0s3')
+Networking applications
+Networking applications : web servers, email client, browser, gaming
+Exchange network packet via api like socket
+servers open sockets at well known ip address + port number
+Socket of web client connects to socket at web server and send and receive messages
 
-* The Core 'ip' Toolchain Syntax for Interface Diagnostics:
-  - ip address show (Analyzing IP assignments, subnet masks, and scopes)
-  - ip link show (Verifying Layer 2 hardware link state: UP/DOWN, MTU limits)
-  - ip route show (Inspecting the Kernel Routing Table and Default Gateway paths)
+client application connect and receive (socket) -------> server application with IP and port (socket)
+
+need to do it deep in networking part
+
 
 
 TOPIC 2: SOCKET STATISTICS & PORT BINDING MECHANICS
 ----------------------------------------------------------------------
+Socket is bi-directional data transfer mechanism
+A socket is internal communication endpoint created by the Operating System's Kernel. It allows two applications  to talk to each other and exchange data.
+Once socket is created communication between local host and remote host will take in form of packets
+
+
+Connection - A medium or channel connected for communication
+Session - the limited time of the conversation between two systemspace. All session must have start and eventually end
+
+one sides session information is called socket or endpoint
+two side's session information is called socket pairs or endpoints
+IP address + port  = socket
+
+
 * Understanding Network Socket Binding:
   - Privileged / System Ports (0 - 1023) vs. Ephemeral Ports (1024 - 65535)
+1.  System ports - range 0-1023
+  They are reserveed for core. standered internet services are protocols
+  22 for ssh, 80 http 443 https 53 domain name service
+  
+2. USER PORTS (Also known as "Registered Ports") -range 1024 – 49151
+Purpose: Assigned by IANA (Internet Assigned Numbers Authority) to 
+  specific companies or applications for their proprietary software.
+  - Port 3306: MySQL Database
+  - Port 6379: Redis Cache
+  - Port 8080: Tomcat / Jenkins / Custom Web Applications
+3. EPHEMERAL PORTS / DYNAMIC PORTS - Official IANA Range: 49152 – 65535
+Crucial Fact: Ephemeral Ports and Dynamic Ports are THE SAME THING. 
+  "Dynamic" is the formal IANA naming convention, while "Ephemeral" 
+  (meaning short-lived or temporary) is the systems/Kernel terminology.
+ Temporary, short-lived ports automatically allocated by the 
+  Kernel for outbound connections.
+  
+
   - Common service mappings (SSH: 22, HTTP: 80, HTTPS: 443, MySQL: 3306)
+
+Ports are requested as per use
+
+
 
 * The Modern 'ss' (Socket Statistics) Toolchain:
   - Investigating active kernel socket states
   - Execution flags mapping: ss -tulpn (-t, -u, -l, -p, -n mechanics)
+  
+  ss is powerful utility for displaying network socket information on linux system
+  It is consider replacement for netstat command
+  The 'ss' (Socket Statistics) command is a built-in Linux utility used to dump socket statistics directly from the Linux Kernel. 
+It tells you  exactly how your server is communicating with the outside world or internal processes.
+  
+  ss - displays all sockets
+  ss -a - displays all sockets
+  ss -l - listening sockets
+  ss -t - tcp connections
+  ss -p - all process associatees with sockets
+  ss -u - all udp connections
+  ss -n - numberic address
 
 
 TOPIC 3: NETWORK TROUBLESHOOTING & ROUTING DIAGNOSTICS
 ----------------------------------------------------------------------
 * Low-Level Connectivity Testing & Path Tracing:
   - ping (Testing ICMP echo requests and measuring round-trip latency)
-  - traceroute / mtr (Tracking hop-by-hop router pathways and packet drop zones)
+   
+   ping ip - 0% packet loss connectivity is there 100% packet loss connectivity is not there
+   Ping command checks netwrk connectivity
+   check internet connections 
+   check network interface cards
+   check latency on network
+   DNS resolution
+   
+If you can not establish connectivity(100% packet loss) with server using ping these might be possible reasons
+firewall blocking you
+server is down
+our internet connectivity issue
+
+50% packet loss - partial connectivity
+network traffic if lot of data already processing
+
+ping www.google.com
+you can ping hostname and IP as well
+
+- traceroute / mtr (Tracking hop-by-hop router pathways and packet drop zones)
+
+Tracks the route packets on how the data travels on interent from your computer to destination
+THe only parameter requied for it ip or name of the destination host
+
+traceroute www.google.com
+
 
 * Domain Name System (DNS) Interrogation:
+
+Dig command used to returning dns queries 
+you can query a records, text records, response time and more
+other tools nslookup
+
   - dig (Querying DNS records, nameservers, and TTL values)
   - dig +short (Filtering clean IP outputs for automation scripting loops)
+
+dig www.google.com
+it will show various details like ip and reponse time
+the lower the response time the faster the site is loading
+
+
+when you are using dig it is showing lot of information on screen if you want to trim it down use below command
+dig +shot www.google.com
+
+
+dig ttl www.google.com ttl - time to live
+if you have DNS record there will be TTL number associaed with it
+which describes how long a record is cached on your system and then need to fetch it again
+this is great for websites
+
+
 
 
 TOPIC 4: APPLICATION-LAYER TRANSPORT TESTING ('curl' & 'nc')
 ----------------------------------------------------------------------
 * HTTP Stack Validation:
   - curl -Iv (Fetching HTTP response headers and diagnosing SSL/TLS handshakes)
+  The 'curl -Iv' command is an advanced network diagnostic tool combination 
+used by SREs to inspect the Application Layer (HTTP/HTTPS) and Security 
+Layer (SSL/TLS) of a website without downloading any files or web pages.
+  curl stands for client URL
+  curl is a tool used for transmitting data from or to the server
+  
+  if you want to see any package is intalled or not use 
+  which package_name
+  
+  curl url http://url
+  it will show code for that website on terminal
+  
+  curl -o pratik.txt http://url
+  it will store output in file instead showing on terminal
+  
+  
+  curl https://example.com/api/2/employees if you dont put any option by default is assumes to get information
+  curl -d '{"name" = "Jamie"} -H 'Context-Type:application/json' -X POST https"//example.com/api/2/create - post information on website
+  curl -X DELETE  https://example.com/api/2/employees/31 - to delete
+  
+  
 
 * Netcat ('nc') Infrastructure Probing:
   - Scanning remote raw socket endpoints to identify firewall blocks
   - Execution syntax: nc -zv <Remote_IP> <Port>
+======================================================================
+
+
+======================================================================
+                  LINUX INTERNALS: DAY 6/15 TOPICS
+======================================================================
+
+TOPIC 1: STORAGE LAYER ARCHITECTURE (DISK HARDWARE TO KERNEL)
+• Block Devices vs Character Devices
+• Storage Naming Conventions (/dev/sdX vs /dev/nvmeXnX)
+• Partition Tables: MBR vs GPT Mechanics
+
+TOPIC 2: FILE SYSTEM INTERNALS & THE POWER OF INODES
+• What is a File System? (ext4, XFS)
+• The Inode Architecture & File Metadata Tracking
+• The SRE Production Nightmare: Inode Exhaustion vs Space Exhaustion
+
+TOPIC 3: STORAGE INSPECTION & SRE TOOLKIT
+• lsblk (Block Device Tree View)
+• df -h & df -i (Disk Space vs Inode Utilization)
+• du -sh * (Drilling Down and Finding Storage Hogs)
+
+TOPIC 4: MOUNT MECHANICS & STATIC MAPPING
+• Kernel Mount Concepts (Attaching Hardware to Directories)
+• The /etc/fstab File Internals & Boot Dependencies
 ======================================================================

@@ -651,9 +651,16 @@ Write a `for` loop to iterate through the `fleet`. Inside the loop, call a custo
 • Write Mode ('w')  : Opens a file for writing. Overwrites existing data completely.
 • Append Mode ('a') : Appends new data at the end of the file. Best for system logs.
 
+variable.strip - remove characters from both left and right side
+variable.lstrip - remove characters from left side
+variable.rstrip - remove characters from right side
+
+
 [2] THE OS MODULE (System-Level Automation)
 ------------------------------------------------------------
 > Purpose: To interact with the underlying operating system (Linux/Windows) directories.
+the OS module in python is a built in library that provides functions for interacting with operating system
+
 • os.getcwd()       : Returns the Current Working Directory of the script.
 • os.listdir()      : Returns a list of all files and folders inside a directory.
 • os.path.exists()  : Checks if a specific file or folder exists on the server.
@@ -664,4 +671,145 @@ Write a `for` loop to iterate through the `fleet`. Inside the loop, call a custo
 • Syntax    : Written with round brackets `()`.
 • Example   : server_config = ("prod-db-01", "10.0.0.4", 8080)
 • SRE Use   : Storing fixed parameters like Ports or Cloud Regions.
+
+It is same as list but you can not modify data within it
+
+for tuples ()
+for list []
+for dict {}
 ===============================================================================================================================
+
+===========================================================================================================================================================================
+Python Day 7/90: Production Data Structures & SRE Logic
+1. The Hash-Map Revolution (Python Dictionaries In Depth)
+Dictionaries - it contains key value pair where key is unique identifier and value is data for that key.
+ 
+
+
+• Purpose: To achieve microsecond speed when processing millions of server log lines.
+• Time Complexity (O(1) Lookup):
+  - Searching data inside a standard List takes O(n) time (the script slows down when processing millions of items).
+  - Dictionaries use an underlying Hash Map architecture, allowing instantaneous data retrieval for any 'Key' in O(1) time.
+
+• High-Scale Operations & Syntax:
+  - Defining Config Maps:
+    server_ips = {"prod-web-01": "10.0.0.5", "prod-db-01": "10.0.0.9"}
+
+  - Safe Data Retrieval (.get):
+    Always provide a 'Fallback Default' value when using the .get() method to prevent the script from crashing due to missing keys (avoids KeyError).
+    print(server_ips.get("stage-web-01", "IP_NOT_FOUND"))
+	if we return any value that is not present in dict so it will throw key error so now what we will do we will use .get() to send default value
+
+  - Dynamic Iteration (.items):
+    Using .items() to loop through both the 'Key' (hostname) and 'Value' (IP) simultaneously.
+    for host, ip in server_ips.items():
+        print(f"Host: {host} has IP: {ip}")
+	if we want to print only keys from dict we use dict.key() we want to return only values we use dict.values()
+	if we want to return both key and value use dict.items()
+
+2. Sets (The Unique Infrastructure Analyzer)
+• Purpose: To purge duplicate data instantly and isolate configuration differences between servers.
+• Definition: Similar to a List, but it contains ONLY unique values. Duplicate data is automatically dropped.
+• Syntax    : Written with curly brackets `{}` but contains single items instead of key-value pairs.
+• Example   : active_ports = {22, 80, 443, 22}  # 22 will be stored only once automatically.
+
+suppose we write print(keyword in sets) it will tell whether that keyword is present in set or not.
+common values between two sets
+set1.intersection(set2)
+different values from both sets
+set1.difference(set2)
+
+all values from both sets
+set1.union(set2)
+
+
+
+
+
+• SRE Production Operations:
+  - Purging Duplicates (Deduplication):
+    Cleaning up millions of dirty log entries or IP lists in a single line.
+    unique_ips = set(dirty_ip_list)
+  - Intersection (&):
+    Finding common active ports running across two different servers.
+    common_ports = prod_ports & stage_ports
+  - Difference (-):
+    Tracking the exact changes (Delta) between yesterday's configuration file and today's configuration file.
+    config_delta = yesterday_config - today_config
+
+3. List Comprehensions (High-Speed Filtering)
+• Purpose: To write cleaner, shorter, and highly optimized code to reduce system memory overhead.
+• Definition: A method to filter data and generate a new list in a single line of code, instead of writing traditional 4-5 line `for loops`.
+• SRE Use   : Extracting only '500 Internal Server Error' lines out of a massive server log list.
+• Syntax    : [expression for item in iterable if condition]
+• Example   :
+  errors = [log for log in server_logs if "500" in log]
+  
+  first log is return log
+  seocond log is iteration
+  last in log is checking in the log
+  
+  my_list = [n*n for n in nums]
+	return my_list
+
+4. Building Idempotent Automation Scripts
+• Purpose: Ensuring that running a script multiple times will never corrupt the production system's state.
+• Idempotency Concept: The script should apply changes during the first run, but safely skip execution without crashing on subsequent runs if the desired state is already met.
+• SRE Logic Example:
+  Running `os.mkdir("prod_logs")` directly will throw a `FileExistsError` and crash the execution if the folder already exists. It is mandatory to check the current system state using `os.path.exists()` first.
+• Syntax:
+  import os
+  if not os.path.exists("prod_logs"):
+      os.mkdir("prod_logs")
+      print("Folder created successfully.")
+  else:
+      print("Folder already exists. Skipping creation to keep idempotency.")
+	  
+import os
+
+print (os.getcwd()) - it will print current working directory
+os.chdir(path) - it will change current working directory
+os.mkdir("directory name") - it will create a directory
+but if you want to create directory inside directory
+os.makedirs("dict1/dict2/dict3")
+print(os.listdir) - prints directories
+
+os.rmdir("to delete repository")
+os.removedir("dict1/dict2/dict3) - it will delete directory inside directory
+os.rename("source file", "destination file")
+os.stat("file name") - prints information about file
+os.walk("directory") - prints all files within directories
+os.path.exists("path") - checks if path exists
+os.path.basename("path") - print last 
+os.path.dirname("path") - print first
+os.path.split("path") - splits the path
+os.path.isdir("path") - checks if directory exists
+os.path.isfile("path") - checks if file exists
+
+
+===========================================================================================================================================================================
+===========================================================================================================================================================================
+
+======================================================================
+                   PYTHON FOR SRE: DAY 8/90 TOPICS
+======================================================================
+
+TOPIC 1: THE PYTHON FILE I/O SUBSYSTEM & FILE CONTEXTS
+• The Legacy Method (open/close) vs. Context Managers (with open)
+• Core I/O Stream Modes: Read ('r'), Write ('w'), and Append ('a')
+• Linux Kernel File Descriptors & Memory Leak Prevention
+
+TOPIC 2: RAW LOG SCANNING MECHANICS & RAM MANAGEMENT
+• f.read() vs. f.readlines() Memory Footprints
+• The Line-by-Line Iterator (Preventing Out-Of-Memory/OOM Crashes)
+• Handling Large Production Text Streams (Nginx, Syslog) Safely
+
+TOPIC 3: EXCEPTION HANDLING & CRASH RESILIENCY
+• The SRE Resiliency Framework: try-except-else-finally Architecture
+• Trapping Specific System Failures: FileNotFoundError & PermissionError
+• Using Generic Fallbacks (Exception as e) Without Masking Bugs
+
+TOPIC 4: REAL-WORLD LOG ANALYSIS LOGIC
+• Combining Dictionaries + File Loops to Track Error Code Frequency
+• Stripping Whitespaces & Cleaning Dirty String Outputs (.strip(), .split())
+======================================================================
