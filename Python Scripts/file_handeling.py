@@ -8,6 +8,8 @@ with open("Pratik.txt","a") as file:
 
 with open("Pratik.txt","r") as file:
     cont = file.readlines()
+print(cont)
 
-for line in cont:
-    print(line.strip())
+with open("Pratik.txt","r") as file:
+    cont = file.read()
+print(cont)

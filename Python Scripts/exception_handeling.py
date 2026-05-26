@@ -1,3 +1,4 @@
+'''
 def deployment_status(server):
     try:
         ip = server["ip"]
@@ -34,3 +35,16 @@ for i in range(1, n + 1):
     }
 
     deployment_status(server)
+    '''
+from file_handeling import file
+
+try:
+	open("this.txt", "r")
+except Exception as e:
+	print("File is not there")
+else:
+	print("File is there")
+finally:
+	abc =  open("this.txt", "w")
+	abc.write("Hello User")
+	abc.close()

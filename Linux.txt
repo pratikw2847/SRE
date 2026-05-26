@@ -750,13 +750,108 @@ Layer (SSL/TLS) of a website without downloading any files or web pages.
 
 TOPIC 1: STORAGE LAYER ARCHITECTURE (DISK HARDWARE TO KERNEL)
 • Block Devices vs Character Devices
+In Linux, the foundational philosophy is: "Everything is a file." The kernel represents hardware components as special files inside the /dev/ (Device) directory. However, based on how data flows between the kernel and the hardware, they are split into two distinct architectures:
+
+Character Devices (char):
+
+The Logic: They stream data with the kernel Byte-by-Byte (sequential stream). Data is processed directly without being cached or stored in a buffer. You cannot jump around randomly; you must read it in a straight line.
+
+Production Examples: * /dev/tty (The terminal/console input)
+
+/dev/urandom (The kernel's random number generator)
+
+Keyboards, mice, and serial ports.
+
+Block Devices:
+
+The Logic: They do not transfer data byte-by-byte. Instead, they move data in fixed-size chunks called "Blocks" (typically 4KB or 8KB). Because data can be buffered (cached) in kernel RAM, the system can perform Random Access—meaning it can instantly jump to any sector on the disk.
+
+Production Examples: All storage media—HDDs, SSDs, NVMe drives, and USB sticks.
+
 • Storage Naming Conventions (/dev/sdX vs /dev/nvmeXnX)
+
+Storage Naming Conventions
+When you run system diagnostics using the lsblk command, the Linux kernel displays specific naming prefixes based on the underlying hardware controller and interface technology:
+
+/dev/sdX (SCSI / SATA Storage)
+Use Case: Legacy mechanical hard drives (HDDs), standard SATA Solid State Drives (SSDs), and traditional cloud block storage (like older AWS EBS volumes).
+
+Drive Assignment: * First disk detected: /dev/sda
+
+Second disk detected: /dev/sdb
+
+Third disk detected: /dev/sdc ... (and so on).
+
+Partition Sub-naming: When you slice a disk into partitions, the kernel appends a number to the drive string:
+
+/dev/sda1 (Partition 1 on the first disk)
+
+/dev/sda2 (Partition 2 on the first disk)
+
+/dev/nvmeXnX (Non-Volatile Memory Express)
+Use Case: Modern, high-throughput NVMe M.2 or PCIe SSDs used in enterprise servers for blazing-fast I/O operations.
+
+Drive Assignment: The naming follows the controller and namespace layout: nvme[Controller_Number]n[Namespace_Number]
+
+First NVMe drive on controller 0: /dev/nvme0n1
+
+Second NVMe drive on controller 1: /dev/nvme1n1
+
+Partition Sub-naming: Because the drive name already ends in a number (n1), the kernel injects a p (Partition indicator) before the partition number to avoid confusion:
+
+/dev/nvme0n1p1 (Partition 1 on NVMe drive 0)
+
+/dev/nvme0n1p2 (Partition 2 on NVMe drive 0)
+
 • Partition Tables: MBR vs GPT Mechanics
+
+Partition table is a small data structure at the start of the disk that describes how the disk is divided
+Where each partition begins and where it ends and what it contains
+ without it the operating system sees only raw sectors no drives no volumes no file system
+ 
+ MBR - Legacy Limited and simple
+ GPT - Modern Flexible Robust
+ 
+ Master Boot Record
+ THe MBR lives in the very first 512 byte sector of the disk
+ The bios reads this one sector finds the boot code and hands over control
+ Everything that follows partitions file system your OS starts from this 512 bytes
+ 
+ GPT - GPT replaces BIOS boot code with UEFI firmware that natively understands partitiobs. The table itself can describe massive drives with full reduendency
 
 TOPIC 2: FILE SYSTEM INTERNALS & THE POWER OF INODES
 • What is a File System? (ext4, XFS)
+A raw block device is just a blank sequence of storage sectors. A File System is the structured software layer injected onto a partition that governs how data is stored, organized, named, and retrieved.
+
+ext4 (Fourth Extended Filesystem):
+
+Mechanics: The traditional Linux standard. It uses a fixed allocation scheme—when you format the disk, a predetermined, immutable number of indexes (Inodes) are created.
+
+Best Use Case: Standard Linux distributions, root (/) partitions, and general-purpose workloads.
+
+XFS (Extents-Based Filesystem):
+
+Mechanics: An enterprise-grade, high-performance file system. Unlike ext4, XFS allocates inodes dynamically as files are created (up to a max percentage limits set during initialization).
+
+Best Use Case: Enterprise storage arrays, database clusters, and massive file servers handling multi-terabyte datasets.
+
 • The Inode Architecture & File Metadata Tracking
-• The SRE Production Nightmare: Inode Exhaustion vs Space Exhaustion
+In Linux, a filename is completely separated from its data. The file name is merely a human-readable alias stored inside a directory index pointing to an Inode (Index Node) number.
+
+An Inode is a fixed 256-byte metadata storage structure inside the file system layer. It does NOT store the filename or the actual data contents. Instead, it tracks:
+
+File Type (Regular file, directory, symlink, block device)
+
+Permissions (Read, Write, Execute flags for User/Group/Others)
+
+Ownership (UID - User ID, GID - Group ID)
+
+Timestamps (mtime - modification, ctime - metadata change, atime - last access)
+
+Size (File size in bytes)
+
+Data Block Pointers: Explicit pointer addresses tracking exactly which hard blocks on the physical hardware contain the raw binary fragments of the file.
+• The SRE Production Nightmare: Inode Exhaustion vs. Space ExhaustionWhen an automation pipeline or system daemon crashes shouting No space left on device, a novice engineer assumes the disk is full of heavy files. An experienced SRE checks both layers immediately.Outage TypeCauseDiagnostic CommandHow to ResolveSpace ExhaustionLarge files (gigantic unrotated log streams, raw core dumps, or application backups) have consumed 100% of the physical storage blocks.df -hUse du -sh * to track down the giant log/file hogging bytes, and nullify it safely (e.g., > large_app.log).Inode ExhaustionBillions of tiny files (frequently misconfigured session files, email queues, or infinite micro-lock temporary files) have consumed every index pointer slot, even though the disk has hundreds of Gigabytes of physical capacity left.df -iUse a rapid search iterator to find directories containing millions of micro-files: find / -type d -size +1M. Purge them completely using find . -name "*.tmp" -delete.
 
 TOPIC 3: STORAGE INSPECTION & SRE TOOLKIT
 • lsblk (Block Device Tree View)
@@ -765,5 +860,64 @@ TOPIC 3: STORAGE INSPECTION & SRE TOOLKIT
 
 TOPIC 4: MOUNT MECHANICS & STATIC MAPPING
 • Kernel Mount Concepts (Attaching Hardware to Directories)
+The Core Logic: Linux does not use drive letters (like C: or D:). It uses a single unified virtual directory tree starting at root (/). "Mounting" is the process of attaching a formatted partition (e.g., /dev/sdb1) to a specific directory (the "Mount Point") so the kernel can route read/write system calls to the hardware blocks.
+
+mount /dev/sdb1 /mnt/data     # Attaches storage to a directory path
+umount /mnt/data             # Safely detaches the storage layer
+
+
 • The /etc/fstab File Internals & Boot Dependencies
+fstab file is responsible for automatically mounting storage volumes when you start your linux computer
+
+======================================================================
+
+======================================================================
+               LINUX FOR SRE SYLLABUS: DAY 7/90
+       LOGICAL VOLUME MANAGEMENT (LVM) & ENTERPRISE STORAGE
+======================================================================
+
+TOPIC 1: THE LVM ABSTRACTION LAYER (PHYSICAL TO LOGICAL)
+• Why Standard Partitions Fail at Scale (The Rigidity Problem)
+• The LVM Architecture Matrix:
+  - PV (Physical Volumes): Raw blocks labeled for LVM use.
+  - VG (Volume Groups): Combines multiple PVs into a single giant storage pool.
+  - LV (Logical Volumes): Virtual slices carved out of the VG that act like normal partitions.
+
+TOPIC 2: LIVE RUNTIME STORAGE EXPANSION (NO-DOWNTIME SCALING)
+• SRE Operation: Expanding storage dynamically while applications are actively writing.
+• The 2-Step Expansion Pipeline:
+  1. Extending the Logical Volume boundary (`lvextend`).
+  2. Expanding the underlying File System layer runtime (`resize2fs` for ext4 / `xfs_growfs` for XFS).
+
+TOPIC 3: RUNTIME LVM UTILITIES & HEALTH CHECKS
+• Inspection Commands: `pvs`, `vgs`, `lvs` vs. Detailed Viewers (`pvdisplay`, `vgdisplay`, `lvdisplay`)
+• Identifying unallocated space remaining in an enterprise volume group pool.
+
+TOPIC 4: STRIPPING, MIRRORING, & LVM SNAPSHOTS
+• LVM Snapshots: Creating point-in-time reference states for rapid database backups.
+• Understanding the performance impact of copy-on-write allocations during snapshot states.
+======================================================================
+
+
+======================================================================
+                  PYTHON FOR SRE: DAY 9/90 STUDY TOPICS
+======================================================================
+
+[TOPIC 1: THE OS & SYS SUBSYSTEMS (INTERACTING WITH THE KERNEL)]
+----------------------------------------------------------------------
+* 'import os' vs. 'import sys'
+* Dynamic Command Line Input via 'sys.argv'
+* File System Interactions: os.path.exists(), os.path.join(), os.makedirs()
+
+[TOPIC 2: REGULAR EXPRESSIONS (RE) FOR ADVANCED LOG PARSING]
+----------------------------------------------------------------------
+* Limitations of Standard Substring Matching
+* Token Matching Mechanics: ., \d, +, *, ^, $
+* Engine Scanning Operations: re.search(), re.findall(), RegEx Groups
+
+[TOPIC 3: CONVERTING RAW TEXT TO STRUCTURED LOGS (JSON AUTOMATION)]
+----------------------------------------------------------------------
+* Plain Text Limitations vs. Modern Logging Standards (JSON Logs)
+* Python Data-Object to JSON Serialization: json.dumps() vs. json.loads()
+* The End-to-End Log Automation Pipeline Blueprint
 ======================================================================

@@ -799,13 +799,67 @@ TOPIC 1: THE PYTHON FILE I/O SUBSYSTEM & FILE CONTEXTS
 • Core I/O Stream Modes: Read ('r'), Write ('w'), and Append ('a')
 • Linux Kernel File Descriptors & Memory Leak Prevention
 
+open ("file.txt", "w" - write/"a" - append at last/"r" - read file)
+default mode is read
+
+if you use r as argument and if file doest not exist it will throw error and if you use w as argument and if file does not exist it will create a file
+
+
+test = f.read()
+print(text)
+f.close()
+
+if you want to open any binary file simple pass rb as argument wb and ab
+
+if you open any file you need to close it as well
+
+if you use with open("file_name", argument)
+you dont need to close the file 
+
+In Linux, remember the golden rule: "Everything is a file." To keep track of every open file, network socket, or pipeline that a running program (process) is interacting with, the Linux Kernel maintains a private tracking array for that process called the File Descriptor Table.
+
+When your Python script calls open(), the kernel opens the file layer, assigns it a non-negative integer as a tracking index, and hands that number back to Python. This integer is the File Descriptor (FD).
+
+By default, every single Linux process automatically starts with three standard File Descriptors already mapped:
+
+0 = Standard Input (stdin) — The keyboard/terminal input stream.
+
+1 = Standard Output (stdout) — The terminal display output stream.
+
+2 = Standard Error (stderr) — The dedicated stream where crash logs and errors are printed.
+
+3, 4, 5... = Custom files, network connections, or database sockets opened by your Python script
+
 TOPIC 2: RAW LOG SCANNING MECHANICS & RAM MANAGEMENT
 • f.read() vs. f.readlines() Memory Footprints
 • The Line-by-Line Iterator (Preventing Out-Of-Memory/OOM Crashes)
 • Handling Large Production Text Streams (Nginx, Syslog) Safely
 
+1. f.read() — The Single String Footprint
+What it does: This method reads the entire contents of a file from the disk block layer in one single operational sweep. It takes all the characters, words, and symbols and loads them into system RAM as a single, massive String object.
+
+2. f.readlines() — The List of Strings Footprint
+What it does: This method also reads the entire file into system RAM in a single sweep. However, instead of storing it as one large text block, it automatically parses the stream, splits the data every time it encounters a newline character (\n), and packages each individual line as a separate string element inside a Python List.
+
 TOPIC 3: EXCEPTION HANDLING & CRASH RESILIENCY
 • The SRE Resiliency Framework: try-except-else-finally Architecture
+
+try:
+	open("this.txt", "r")
+except exception as e:
+	print e
+	
+but if you use pass then it will not print anyting
+
+try:
+	open("this.txt", "r")
+except Exception as e:
+	print("File is not there")
+else:
+	open("this.txt", "w")
+finally:
+	print("File was not there we have created that file")
+
 • Trapping Specific System Failures: FileNotFoundError & PermissionError
 • Using Generic Fallbacks (Exception as e) Without Masking Bugs
 
